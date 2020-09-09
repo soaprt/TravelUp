@@ -1,2 +1,2 @@
-# TicketSearch
-Android app with the purpose to find cheap air tickets.
+# TravelUp
+Mobile application that will make life of each tourist easier. 
