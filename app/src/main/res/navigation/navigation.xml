@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/splashScreenFragment">
+
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.sostrovsky.travelup.ui.app_init.AppInitFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_splash_screen" >
+        <action
+            android:id="@+id/action_splashScreenFragment_to_searchTicketFragment"
+            app:destination="@id/searchTicketFragment"
+            app:popUpTo="@id/splashScreenFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchTicketFragment"
+        android:name="com.sostrovsky.travelup.ui.ticket.search.TicketSearchFragment"
+        android:label="@string/search_ticket"
+        tools:layout="@layout/fragment_search_ticket" >
+        <action
+            android:id="@+id/action_searchTicketFragment_to_searchTicketResultFragment"
+            app:destination="@id/searchTicketResultFragment" />
+        <action
+            android:id="@+id/action_searchTicketFragment_to_preferencesFragment"
+            app:destination="@id/preferencesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchTicketResultFragment"
+        android:name="com.sostrovsky.travelup.ui.ticket.search_result.TicketSearchResultFragment"
+        android:label="@string/search_result"
+        tools:layout="@layout/fragment_search_ticket_result" >
+        <action
+            android:id="@+id/action_searchTicketResultFragment_to_preferencesFragment"
+            app:destination="@id/preferencesFragment"/>
+        <argument
+            android:name="score"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/preferencesFragment"
+        android:name="com.sostrovsky.travelup.ui.preferences.PreferencesFragment"
+        android:label="@string/prefs"
+        tools:layout="@layout/fragment_preferences" >
+        <action
+            android:id="@+id/action_preferencesFragment_to_searchTicketResultFragment"
+            app:destination="@id/searchTicketResultFragment" />
+        <action
+            android:id="@+id/action_preferencesFragment_to_searchTicketFragment"
+            app:destination="@id/searchTicketFragment" />
+    </fragment>
+
+</navigation>
