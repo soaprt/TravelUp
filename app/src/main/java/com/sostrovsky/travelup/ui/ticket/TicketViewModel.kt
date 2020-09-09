@@ -1,4 +1,4 @@
-package com.sostrovsky.travelup.ui.ticket.search
+package com.sostrovsky.travelup.ui.ticket
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +23,7 @@ import java.util.*
  * Date: 26.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-class TicketSearchViewModel : ViewModel() {
+class TicketViewModel : ViewModel() {
     /**
      * The job for all coroutines started by this ViewModel.
      */
@@ -45,8 +45,8 @@ class TicketSearchViewModel : ViewModel() {
     val searchButtonVisible: LiveData<Boolean>
         get() = _searchButtonVisible
 
-    private val _ticketSearchResult = MutableLiveData<List<TicketDomainModel>>()
-    val ticketSearchResult: LiveData<List<TicketDomainModel>>
+    private val _ticketSearchResult = MutableLiveData<Pair<List<TicketDomainModel>, String>>()
+    val ticketSearchResult: LiveData<Pair<List<TicketDomainModel>, String>>
         get() = _ticketSearchResult
 
     private var _userSettings = MutableLiveData<UserSettingsDomainModel>()
@@ -75,6 +75,9 @@ class TicketSearchViewModel : ViewModel() {
     private var destinationFromComplete = false
     private var flyingToComplete = false
     private var departureDateComplete = false
+
+    val context = TravelUpApp.applicationContext()
+    private val ticketNotFoundMessage = context.getString(R.string.msg_ticket_not_found)
 
     fun setDestinationFrom(destinationFrom: CharSequence?): CharSequence? {
         var setResult: CharSequence? = inputRequireError
@@ -129,7 +132,8 @@ class TicketSearchViewModel : ViewModel() {
     fun searchTicket() {
         viewModelScope.launch {
             disableSearchButton()
-            _ticketSearchResult.value = ticketRepository.getTickets(ticketSearchParams)
+            _ticketSearchResult.value = Pair(ticketRepository.getTickets(ticketSearchParams),
+                ticketNotFoundMessage)
             enableSearchButton()
         }
     }

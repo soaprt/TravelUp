@@ -1,5 +1,6 @@
 package com.sostrovsky.travelup.database.entities.ticket
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
@@ -12,7 +13,28 @@ import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 @Entity(tableName = "ticket")
 class TicketDBModel constructor(
     @PrimaryKey(autoGenerate = true)
-    val id: Int
+    val id: Int,
+
+    @ColumnInfo(name = "flight_date")
+    val departureDate: String,
+
+    @ColumnInfo(name = "departure_time")
+    val departureTime: String,
+
+    @ColumnInfo(name = "destination_from")
+    val departureFrom: String,
+
+    @ColumnInfo(name = "flying_to")
+    val departureTo: String,
+
+    @ColumnInfo(name = "carrier_name")
+    val carrierName: String,
+
+    @ColumnInfo(name = "flight_price")
+    val flightPrice: String,
+
+    @ColumnInfo(name = "flight_price_currency")
+    val flightPriceCurrency: String
 )
 
 /**
@@ -21,7 +43,14 @@ class TicketDBModel constructor(
 fun List<TicketDBModel>.asDomainModel(): List<TicketDomainModel> {
     return map {
         TicketDomainModel(
-            id = it.id
+            id = it.id,
+            departureDate = it.departureDate,
+            departureTime = it.departureTime,
+            departureFrom = it.departureFrom,
+            departureTo = it.departureTo,
+            carrierName = it.carrierName,
+            flightPrice = it.flightPrice,
+            flightPriceCurrency = it.flightPriceCurrency
         )
     }
 }

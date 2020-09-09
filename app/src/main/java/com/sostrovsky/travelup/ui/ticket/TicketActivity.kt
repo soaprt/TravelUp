@@ -1,12 +1,13 @@
-package com.sostrovsky.travelup.ui
+package com.sostrovsky.travelup.ui.ticket
 
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.sostrovsky.travelup.R
+import com.sostrovsky.travelup.ui.BaseActivity
 
-class MainActivity : BaseActivity(R.id.rootLayout) {
+class TicketActivity : BaseActivity(R.id.rootLayout) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -119,6 +119,10 @@ class PreferencesViewModel : ViewModel() {
     var newCountryPosition = -1
     var countryChanged = false
 
+    val context = TravelUpApp.applicationContext()
+    private val saveDataSuccess = context.getString(R.string.msg_save_data_success)
+    private val saveDataFailure = context.getString(R.string.msg_save_data_failure)
+
     fun setNewLanguage(position: Int) {
         if (oldLanguagePosition == -1 && newLanguagePosition == -1) {
             oldLanguagePosition = position
@@ -188,14 +192,13 @@ class PreferencesViewModel : ViewModel() {
     }
 
     private fun showSaveSuccess() {
-        _showSnackBarEvent.value =
-            Pair(true, TravelUpApp.applicationContext().getString(R.string.save_data_success))
+        _showSnackBarEvent.value = Pair(true, saveDataSuccess)
+
     }
 
     private fun showSaveFailure() {
         _saveButtonVisible.postValue(true)
-        _showSnackBarEvent.value =
-            Pair(true, TravelUpApp.applicationContext().getString(R.string.save_data_failure))
+        _showSnackBarEvent.value = Pair(true, saveDataFailure)
     }
 
     fun doneShowingSnackBar() {

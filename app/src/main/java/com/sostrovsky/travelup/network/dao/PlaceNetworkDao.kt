@@ -2,6 +2,7 @@ package com.sostrovsky.travelup.network.dao
 
 import com.sostrovsky.travelup.network.dto.place.PlaceDTO
 import kotlinx.coroutines.Deferred
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -13,12 +14,12 @@ import retrofit2.http.Query
  */
 interface PlaceNetworkDao {
     @GET("autosuggest/{version}/{country}/{currency}/{locale}")
-    fun getPlaces(
+    fun fetchPlacesAsync(
         @Path("version") version: String,
         @Path("country") country: String,
         @Path("currency") currency: String,
         @Path("locale") locale: String,
         @Query("query") query: String,
         @Query("apikey") apiKey: String
-    ): Deferred<PlaceDTO>
+    ): Deferred<Response<PlaceDTO>>
 }

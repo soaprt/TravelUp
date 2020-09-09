@@ -1,4 +1,4 @@
-package com.sostrovsky.travelup.ui.ticket.search
+package com.sostrovsky.travelup.ui.ticket
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -6,11 +6,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.databinding.FragmentSearchTicketBinding
 import com.sostrovsky.travelup.ui.MenuFragment
 import kotlinx.android.synthetic.main.fragment_search_ticket.*
-import timber.log.Timber
 import java.util.*
 
 /**
@@ -18,11 +18,11 @@ import java.util.*
  */
 class TicketSearchFragment : MenuFragment(R.layout.fragment_search_ticket) {
     private lateinit var mBinding: FragmentSearchTicketBinding
-    private lateinit var viewModel: TicketSearchViewModel
+    private lateinit var viewModel: TicketViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TicketSearchViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity()).get(TicketViewModel::class.java)
 
         mBinding = (binding as FragmentSearchTicketBinding)
         mBinding.setLifecycleOwner(this)
@@ -109,10 +109,25 @@ class TicketSearchFragment : MenuFragment(R.layout.fragment_search_ticket) {
     }
 
     private fun setSearchButton() {
+        btnSearch.setOnClickListener {
+            (requireActivity() as TicketActivity).hideSoftKeyboard(requireActivity())
+            viewModel.searchTicket()
+        }
+
         viewModel.ticketSearchResult.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer { data ->
-                Timber.e("SearchFragment: ticketSearchResult: $data")
+                if (data.first.isEmpty()) {
+                    (activity as TicketActivity).showSnackBarEvent(data.second)
+                } else {
+                    moveForward()
+                }
             })
+    }
+
+    private fun moveForward() {
+        val action =
+            TicketSearchFragmentDirections.actionSearchTicketFragmentToSearchTicketResultFragment()
+        NavHostFragment.findNavController(this).navigate(action)
     }
 }

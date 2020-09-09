@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/departureDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="@dimen/indent_8dp"
+        android:layout_weight="1"
+        tools:text="@string/hint_departure_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/departureFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="@dimen/indent_8dp"
+        android:layout_weight="1"
+        tools:text="@string/hint_departure_from"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departureDate" />
+
+    <TextView
+        android:id="@+id/departureTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginStart="@dimen/indent_16dp"
+        android:layout_weight="1"
+        tools:text="@string/hint_departure_to"
+        app:layout_constraintBottom_toBottomOf="@+id/departureFrom"
+        app:layout_constraintStart_toEndOf="@+id/departureFrom"
+        app:layout_constraintTop_toTopOf="@+id/departureFrom" />
+
+    <TextView
+        android:id="@+id/departureTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="@dimen/indent_8dp"
+        android:layout_weight="1"
+        tools:text="@string/hint_departure_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departureTo" />
+
+    <TextView
+        android:id="@+id/carrierName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="@dimen/indent_8dp"
+        android:layout_weight="1"
+        tools:text="@string/hint_carrier_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departureTime" />
+
+    <TextView
+        android:id="@+id/flightPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="@dimen/indent_8dp"
+        android:layout_weight="1"
+        tools:text="@string/hint_flight_price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/carrierName" />
+
+    <TextView
+        android:id="@+id/flightPriceCurrency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginStart="@dimen/indent_8dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="@+id/flightPrice"
+        app:layout_constraintStart_toEndOf="@+id/flightPrice"
+        app:layout_constraintTop_toTopOf="@+id/flightPrice"
+        tools:text="@string/hint_flight_price_currency" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

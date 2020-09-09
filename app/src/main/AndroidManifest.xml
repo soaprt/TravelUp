@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.sostrovsky.travelup.ui.BaseActivity" />
-        <activity android:name="com.sostrovsky.travelup.ui.MainActivity">
+        <activity android:name="com.sostrovsky.travelup.ui.ticket.TicketActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

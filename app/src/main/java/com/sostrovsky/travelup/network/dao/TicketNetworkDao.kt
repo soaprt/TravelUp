@@ -2,6 +2,7 @@ package com.sostrovsky.travelup.network.dao
 
 import com.sostrovsky.travelup.network.dto.ticket.TicketsResponse
 import kotlinx.coroutines.Deferred
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -13,7 +14,7 @@ import retrofit2.http.Query
  */
 interface TicketNetworkDao {
     @GET("browsequotes/{version}/{country}/{currency}/{locale}/{originPlace}/{destinationPlace}/{outboundPartialDate}/{inboundPartialDate}")
-    fun getTickets(
+    fun fetchTicketsAsync(
         @Path("version") version: String,
         @Path("country") country: String,
         @Path("currency") currency: String,
@@ -23,5 +24,5 @@ interface TicketNetworkDao {
         @Path("outboundPartialDate") outboundPartialDate: String,
         @Path("inboundPartialDate") inboundPartialDate: String,
         @Query("apikey") apiKey: String
-    ): Deferred<TicketsResponse>
+    ): Deferred<Response<TicketsResponse>>
 }

@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchTicketFragment"
-        android:name="com.sostrovsky.travelup.ui.ticket.search.TicketSearchFragment"
+        android:name="com.sostrovsky.travelup.ui.ticket.TicketSearchFragment"
         android:label="@string/search_ticket"
         tools:layout="@layout/fragment_search_ticket" >
         <action
@@ -30,16 +30,15 @@
     </fragment>
     <fragment
         android:id="@+id/searchTicketResultFragment"
-        android:name="com.sostrovsky.travelup.ui.ticket.search_result.TicketSearchResultFragment"
+        android:name="com.sostrovsky.travelup.ui.ticket.TicketSearchResultFragment"
         android:label="@string/search_result"
         tools:layout="@layout/fragment_search_ticket_result" >
         <action
             android:id="@+id/action_searchTicketResultFragment_to_preferencesFragment"
             app:destination="@id/preferencesFragment"/>
-        <argument
-            android:name="score"
-            app:argType="integer"
-            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_searchTicketResultFragment_to_searchTicketFragment"
+            app:destination="@id/searchTicketFragment" />
     </fragment>
     <fragment
         android:id="@+id/preferencesFragment"
