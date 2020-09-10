@@ -22,16 +22,15 @@ object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>
         Timber.e("TicketFetcherOnline: fetch()")
         val tickets = mutableListOf<TicketDBModel>()
 
-        val debug = true
+        val debug = false
 
         if (debug) {
-            fetchMockedTickets("KIV", "MOSC", param)?.let {
+            fetchMockedTickets()?.let {
                 if (it.Quotes.isNotEmpty()) {
                     tickets.addAll(it.asDatabaseModel())
                 }
             }
         } else {
-
             val originPlace = getPlaceId(param, param.destinationFrom)
             var destinationPlace = ""
             var continueSearch = true
@@ -59,10 +58,7 @@ object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>
         return tickets
     }
 
-    private fun fetchMockedTickets(
-        originPlace: String, destinationPlace: String,
-        param: TicketSearchParams
-    ): TicketsResponse? {
+    private fun fetchMockedTickets(): TicketsResponse? {
         return mockedTicketsResponse()
     }
 
