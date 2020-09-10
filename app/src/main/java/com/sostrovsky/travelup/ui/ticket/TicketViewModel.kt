@@ -10,7 +10,7 @@ import com.sostrovsky.travelup.domain.preferences.UserSettingsDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
 import com.sostrovsky.travelup.repository.Repository
-import com.sostrovsky.travelup.util.getFormattedDate
+import com.sostrovsky.travelup.util.calendarDateToLocalDate
 import com.sostrovsky.travelup.util.isNotPastDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -113,7 +113,7 @@ class TicketViewModel : ViewModel() {
         departureDateComplete = isNotPastDate(selectedDate)
         checkSearchButton()
 
-        departureDate.value = getFormattedDate(selectedDate.time).let {
+        departureDate.value = calendarDateToLocalDate(selectedDate.time).let {
             if (departureDateComplete) {
                 ticketSearchParams.departureDate = it
                 setResult = null
@@ -132,8 +132,10 @@ class TicketViewModel : ViewModel() {
     fun searchTicket() {
         viewModelScope.launch {
             disableSearchButton()
-            _ticketSearchResult.value = Pair(ticketRepository.getTickets(ticketSearchParams),
-                ticketNotFoundMessage)
+            _ticketSearchResult.value = Pair(
+                ticketRepository.getTickets(ticketSearchParams),
+                ticketNotFoundMessage
+            )
             enableSearchButton()
         }
     }

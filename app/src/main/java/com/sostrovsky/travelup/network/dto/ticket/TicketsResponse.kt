@@ -2,8 +2,8 @@ package com.sostrovsky.travelup.network.dto.ticket
 
 import com.sostrovsky.travelup.database.entities.ticket.TicketDBModel
 import com.sostrovsky.travelup.network.dto.preferences.CurrencyFromJSON
-import com.sostrovsky.travelup.util.getFormattedUTCDate
-import com.sostrovsky.travelup.util.getFormattedUTCTime
+import com.sostrovsky.travelup.util.isoTimeToLocalTime
+import com.sostrovsky.travelup.util.isoDateToLocalDate
 import com.squareup.moshi.JsonClass
 
 /**
@@ -12,22 +12,30 @@ import com.squareup.moshi.JsonClass
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 @JsonClass(generateAdapter = true)
-data class TicketsResponse(val Quotes: List<QuoteFromJSON>, val Places: List<TicketPlaceFromJSON>,
-                           val Carriers: List<CarrierFromJSON>, val Currencies: List<CurrencyFromJSON>)
+data class TicketsResponse(
+    val Quotes: List<QuoteFromJSON>, val Places: List<TicketPlaceFromJSON>,
+    val Carriers: List<CarrierFromJSON>, val Currencies: List<CurrencyFromJSON>
+)
 
 @JsonClass(generateAdapter = true)
-data class QuoteFromJSON(val QuoteId: Int, val MinPrice: Int, val Direct: Boolean,
-                         val OutboundLeg: BoundLegFromJSON, val InboundLeg: BoundLegFromJSON?,
-                         val QuoteDateTime: String)
+data class QuoteFromJSON(
+    val QuoteId: Int, val MinPrice: Int, val Direct: Boolean,
+    val OutboundLeg: BoundLegFromJSON, val InboundLeg: BoundLegFromJSON?,
+    val QuoteDateTime: String
+)
 
 @JsonClass(generateAdapter = true)
-data class BoundLegFromJSON(val CarrierIds: List<Int>, val OriginId: Int, val DestinationId: Int,
-                            val DepartureDate: String)
+data class BoundLegFromJSON(
+    val CarrierIds: List<Int>, val OriginId: Int, val DestinationId: Int,
+    val DepartureDate: String
+)
 
 @JsonClass(generateAdapter = true)
-data class TicketPlaceFromJSON(val PlaceId: Int, val IataCode: String?, val Name: String,
-                               val Type: String, val SkyscannerCode: String, val CityName: String?,
-                               val CityId: String?, val CountryName: String?)
+data class TicketPlaceFromJSON(
+    val PlaceId: Int, val IataCode: String?, val Name: String,
+    val Type: String, val SkyscannerCode: String, val CityName: String?,
+    val CityId: String?, val CountryName: String?
+)
 
 @JsonClass(generateAdapter = true)
 data class CarrierFromJSON(val CarrierId: Int, val Name: String)
@@ -39,16 +47,18 @@ fun TicketsResponse.asDatabaseModel(): List<TicketDBModel> {
     val tickets = mutableListOf<TicketDBModel>()
 
     Quotes.forEach {
-        tickets.add(TicketDBModel(
-            id = it.QuoteId,
-            departureDate = getFormattedUTCDate(it.OutboundLeg.DepartureDate),
-            departureTime = getFormattedUTCTime(it.QuoteDateTime),
-            departureFrom = placeIdToPlaceName(Places, it.OutboundLeg.OriginId),
-            departureTo = placeIdToPlaceName(Places, it.OutboundLeg.DestinationId),
-            carrierName = carrierIdToCarrierName(Carriers, it.OutboundLeg.CarrierIds[0]),
-            flightPrice = it.MinPrice.toString(),
-            flightPriceCurrency = Currencies[0].Code
-        ))
+        tickets.add(
+            TicketDBModel(
+                id = it.QuoteId,
+                departureDate = isoDateToLocalDate(it.OutboundLeg.DepartureDate),
+                departureTime = isoTimeToLocalTime(it.QuoteDateTime),
+                departureFrom = placeIdToPlaceName(Places, it.OutboundLeg.OriginId),
+                departureTo = placeIdToPlaceName(Places, it.OutboundLeg.DestinationId),
+                carrierName = carrierIdToCarrierName(Carriers, it.OutboundLeg.CarrierIds[0]),
+                flightPrice = it.MinPrice.toString(),
+                flightPriceCurrency = Currencies[0].Code
+            )
+        )
     }
 
     return tickets
