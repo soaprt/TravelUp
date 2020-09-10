@@ -48,7 +48,7 @@
             android:layout_height="@dimen/field_height"
             android:ems="10"
             android:focusable="false"
-            android:hint="@string/hint_departure_date"
+            android:hint="@string/label_departure_date"
             android:inputType="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

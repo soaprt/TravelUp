@@ -22,7 +22,7 @@ object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>
         Timber.e("TicketFetcherOnline: fetch()")
         val tickets = mutableListOf<TicketDBModel>()
 
-        val debug = false
+        val debug = true
 
         if (debug) {
             fetchMockedTickets("KIV", "MOSC", param)?.let {

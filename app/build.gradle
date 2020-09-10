@@ -59,6 +59,9 @@ dependencies {
     // Android KTX
     implementation "androidx.core:core-ktx:$coreKtxVersion"
 
+    // CardView
+    implementation "com.android.support:cardview-v7:$cardviewVersion"
+
     // Constraint layout
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVer"
 

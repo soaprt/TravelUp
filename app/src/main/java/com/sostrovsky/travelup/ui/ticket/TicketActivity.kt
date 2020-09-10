@@ -15,7 +15,7 @@ class TicketActivity : BaseActivity(R.id.rootLayout) {
     }
 
     private fun setNavController() {
-        val navController = this.findNavController(R.id.myNavHostFragment)
+        navController = this.findNavController(R.id.myNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController,
             fragmentsWithHiddenUpButton())
     }

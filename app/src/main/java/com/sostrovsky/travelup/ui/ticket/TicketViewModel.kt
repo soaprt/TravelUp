@@ -3,6 +3,7 @@ package com.sostrovsky.travelup.ui.ticket
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavDirections
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.TravelUpApp
 import com.sostrovsky.travelup.domain.place.PlaceSearchParamsDomainModel
@@ -45,8 +46,9 @@ class TicketViewModel : ViewModel() {
     val searchButtonVisible: LiveData<Boolean>
         get() = _searchButtonVisible
 
-    private val _ticketSearchResult = MutableLiveData<Pair<List<TicketDomainModel>, String>>()
-    val ticketSearchResult: LiveData<Pair<List<TicketDomainModel>, String>>
+    private val _ticketSearchResult = MutableLiveData<Triple<List<TicketDomainModel>, NavDirections,
+            String>>()
+    val ticketSearchResult: LiveData<Triple<List<TicketDomainModel>, NavDirections, String>>
         get() = _ticketSearchResult
 
     private var _userSettings = MutableLiveData<UserSettingsDomainModel>()
@@ -75,6 +77,8 @@ class TicketViewModel : ViewModel() {
     private var destinationFromComplete = false
     private var flyingToComplete = false
     private var departureDateComplete = false
+
+    var canMoveToResults: Boolean = false
 
     val context = TravelUpApp.applicationContext()
     private val ticketNotFoundMessage = context.getString(R.string.msg_ticket_not_found)
@@ -132,8 +136,10 @@ class TicketViewModel : ViewModel() {
     fun searchTicket() {
         viewModelScope.launch {
             disableSearchButton()
-            _ticketSearchResult.value = Pair(
+            canMoveToResults = true
+            _ticketSearchResult.value = Triple(
                 ticketRepository.getTickets(ticketSearchParams),
+                TicketSearchFragmentDirections.actionSearchTicketFragmentToSearchTicketResultFragment(),
                 ticketNotFoundMessage
             )
             enableSearchButton()

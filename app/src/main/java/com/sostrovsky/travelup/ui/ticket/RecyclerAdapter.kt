@@ -42,12 +42,10 @@ class RecyclerAdapter(private val tickets: ArrayList<TicketDomainModel>) : Recyc
         fun bindTicket(ticket: TicketDomainModel) {
             this.ticket = ticket
             view.departureDate.text = ticket.departureDate
-            view.departureFrom.text = ticket.departureFrom
-            view.departureTo.text = ticket.departureTo
+            view.departureFromTo.text = "${ticket.departureFrom} - ${ticket.departureTo}"
             view.departureTime.text = ticket.departureTime
             view.carrierName.text = ticket.carrierName
-            view.flightPrice.text = ticket.flightPrice
-            view.flightPriceCurrency.text = ticket.flightPriceCurrency
+            view.flightPrice.text = "${ticket.flightPrice} ${ticket.flightPriceCurrency}"
         }
 
         override fun onClick(v: View) {

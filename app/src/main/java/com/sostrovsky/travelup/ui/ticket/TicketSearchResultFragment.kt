@@ -16,8 +16,6 @@ import kotlinx.android.synthetic.main.fragment_search_ticket_result.*
 class TicketSearchResultFragment : MenuFragment(R.layout.fragment_search_ticket_result) {
     private lateinit var mBinding: FragmentSearchTicketResultBinding
     private lateinit var viewModel: TicketViewModel
-//    private lateinit var linearLayoutManager: LinearLayoutManager
-//    private lateinit var adapter: RecyclerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

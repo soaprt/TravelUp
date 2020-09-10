@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import com.google.android.material.snackbar.Snackbar
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.util.network.NetworkHelper
@@ -12,6 +14,7 @@ import io.reactivex.disposables.Disposable
 
 
 open class BaseActivity(private val rootLayoutId: Int) : AppCompatActivity() {
+    lateinit var navController: NavController
     private var snackBarOffline: Snackbar? = null
     private var networkDisposable: Disposable? = null
 
@@ -66,5 +69,9 @@ open class BaseActivity(private val rootLayoutId: Int) : AppCompatActivity() {
                 activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
         }
+    }
+
+    fun moveTo(action: NavDirections) {
+        navController.navigate(action)
     }
 }

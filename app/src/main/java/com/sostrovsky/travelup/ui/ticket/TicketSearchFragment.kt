@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.databinding.FragmentSearchTicketBinding
 import com.sostrovsky.travelup.ui.MenuFragment
@@ -114,20 +113,23 @@ class TicketSearchFragment : MenuFragment(R.layout.fragment_search_ticket) {
             viewModel.searchTicket()
         }
 
+        /*
+         * Receives the Triple, where:
+         *  first = List<TicketDomainModel>
+         *  second = action (where to move if the list is not empty)
+         *  third = error message (if the list is empty)
+         */
         viewModel.ticketSearchResult.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer { data ->
-                if (data.first.isEmpty()) {
-                    (activity as TicketActivity).showSnackBarEvent(data.second)
-                } else {
-                    moveForward()
+                if (viewModel.canMoveToResults) {
+                    if (data.first.isNotEmpty()) {
+                        viewModel.canMoveToResults = false
+                        (activity as TicketActivity).moveTo(data.second)
+                    } else {
+                        (activity as TicketActivity).showSnackBarEvent(data.third)
+                    }
                 }
             })
-    }
-
-    private fun moveForward() {
-        val action =
-            TicketSearchFragmentDirections.actionSearchTicketFragmentToSearchTicketResultFragment()
-        NavHostFragment.findNavController(this).navigate(action)
     }
 }
