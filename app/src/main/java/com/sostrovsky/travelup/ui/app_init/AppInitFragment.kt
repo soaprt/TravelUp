@@ -10,13 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 import com.sostrovsky.travelup.R
-import com.sostrovsky.travelup.databinding.FragmentSplashScreenBinding
+import com.sostrovsky.travelup.databinding.FragmentAppInitBinding
+import com.sostrovsky.travelup.databinding.FragmentInitAppBinding
 
 /**
  * Fragment that will be shown on the application start.
  */
 class AppInitFragment : Fragment() {
-    private lateinit var binding: FragmentSplashScreenBinding
+    private lateinit var binding: FragmentAppInitBinding
     private lateinit var viewModel: AppInitViewModel
 
     override fun onCreateView(
@@ -24,7 +25,7 @@ class AppInitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_splash_screen, container,
+            inflater, R.layout.fragment_app_init, container,
             false
         )
         return binding.root
@@ -48,7 +49,7 @@ class AppInitFragment : Fragment() {
      *      * false - is not indeterminate (stops progress)
      */
     private fun isIndeterminate(isIndeterminate: Boolean) {
-        binding.splashScreenProgressBar.isIndeterminate = isIndeterminate
+        binding.appInitProgressBar.isIndeterminate = isIndeterminate
     }
 
     private fun moveForward() {

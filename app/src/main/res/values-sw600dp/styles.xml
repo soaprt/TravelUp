@@ -13,7 +13,7 @@
         <item name="android:background">@drawable/button_state_selector</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/data_text_size</item>
-        <item name="android:padding">@dimen/indent_8dp</item>
+        <item name="android:padding">@dimen/indent_16dp</item>
     </style>
 
     <style name="DataFieldStyle">
@@ -23,17 +23,17 @@
     </style>
 
     <style name="InputFieldStyle">
-        <item name="android:layout_marginStart">@dimen/indent_16dp</item>
-        <item name="android:layout_marginLeft">@dimen/indent_16dp</item>
-        <item name="android:layout_marginTop">@dimen/indent_16dp</item>
-        <item name="android:layout_marginEnd">@dimen/indent_16dp</item>
-        <item name="android:layout_marginRight">@dimen/indent_16dp</item>
+        <item name="android:layout_marginStart">@dimen/indent_32dp</item>
+        <item name="android:layout_marginLeft">@dimen/indent_32dp</item>
+        <item name="android:layout_marginTop">@dimen/indent_32dp</item>
+        <item name="android:layout_marginEnd">@dimen/indent_32dp</item>
+        <item name="android:layout_marginRight">@dimen/indent_32dp</item>
         <item name="android:textColor">@android:color/darker_gray</item>
         <item name="android:textSize">@dimen/hint_text_size</item>
     </style>
 
     <style name="LabelStyle">
-        <item name="android:layout_marginTop">@dimen/indent_8dp</item>
+        <item name="android:layout_marginTop">@dimen/indent_16dp</item>
         <item name="android:textSize">@dimen/label_text_size</item>
     </style>
 
