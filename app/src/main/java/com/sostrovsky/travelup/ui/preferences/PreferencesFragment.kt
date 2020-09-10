@@ -10,9 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.databinding.FragmentPreferencesBinding
+import com.sostrovsky.travelup.ui.ticket.TicketActivity
 import kotlinx.android.synthetic.main.fragment_preferences.*
 
 /**
@@ -157,11 +157,7 @@ class PreferencesFragment : Fragment() {
         viewModel.showSnackBarEvent.observe(viewLifecycleOwner, Observer {
             data ->
             if (data.first) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    data.second,
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                (activity as TicketActivity).showSnackBarEvent(data.second)
                 viewModel.doneShowingSnackBar()
             }
         })

@@ -2,14 +2,14 @@ package com.sostrovsky.travelup.repository.ticket
 
 import com.sostrovsky.travelup.BuildConfig
 import com.sostrovsky.travelup.database.entities.ticket.TicketDBModel
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
 import com.sostrovsky.travelup.network.Network
 import com.sostrovsky.travelup.network.dto.place.asDatabaseModel
+import com.sostrovsky.travelup.network.dto.ticket.TicketsResponse
 import com.sostrovsky.travelup.network.dto.ticket.asDatabaseModel
+import com.sostrovsky.travelup.network.safeApiCall
 import com.sostrovsky.travelup.repository.DataFetcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.sostrovsky.travelup.util.mockedTicketsResponse
 import timber.log.Timber
 
 /**
@@ -17,70 +17,98 @@ import timber.log.Timber
  * Date: 26.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDomainModel>> {
-    override suspend fun fetch(param: TicketSearchParams): List<TicketDomainModel> {
+object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>> {
+    override suspend fun fetch(param: TicketSearchParams): List<TicketDBModel> {
         Timber.e("TicketFetcherOnline: fetch()")
-        return fetchTickets(
-            param
-        ).map {
-            TicketDomainModel(
-                id = it.id
-            )
-        }
-    }
-
-    private suspend fun fetchTickets(param: TicketSearchParams): List<TicketDBModel> {
         val tickets = mutableListOf<TicketDBModel>()
 
-        withContext(Dispatchers.IO) {
-            try {
-                val response = Network.ticketNetworkDao.getTickets(
-                    BuildConfig.API_VERSION,
-                    param.userSettings.countryCode,
-                    param.userSettings.currencyCode,
-                    param.userSettings.localeCode,
-                    getPlaceId(
-                        param,
-                        param.destinationFrom
-                    ),
-                    getPlaceId(
-                        param,
-                        param.flyingTo
-                    ),
-                    param.departureDate,
-                    "",
-                    BuildConfig.API_KEY
-                ).await()
+        val debug = true
 
-                tickets.addAll(response.asDatabaseModel())
-            } catch (e: Exception) {
-                Timber.e("fetchTickets error")
+        if (debug) {
+            fetchMockedTickets("KIV", "MOSC", param)?.let {
+                if (it.Quotes.isNotEmpty()) {
+                    tickets.addAll(it.asDatabaseModel())
+                }
+            }
+        } else {
+
+            val originPlace = getPlaceId(param, param.destinationFrom)
+            var destinationPlace = ""
+            var continueSearch = true
+
+            if (originPlace.isEmpty()) {
+                continueSearch = false
+            }
+
+            if (continueSearch) {
+                destinationPlace = getPlaceId(param, param.flyingTo)
+                if (destinationPlace.isEmpty()) {
+                    continueSearch = false
+                }
+            }
+
+            if (continueSearch) {
+                fetchTickets(originPlace, destinationPlace, param)?.let {
+                    if (it.Quotes.isNotEmpty()) {
+                        tickets.addAll(it.asDatabaseModel())
+                    }
+                }
             }
         }
 
         return tickets
     }
 
+    private fun fetchMockedTickets(
+        originPlace: String, destinationPlace: String,
+        param: TicketSearchParams
+    ): TicketsResponse? {
+        return mockedTicketsResponse()
+    }
+
+    private suspend fun fetchTickets(
+        originPlace: String, destinationPlace: String,
+        param: TicketSearchParams
+    ): TicketsResponse? {
+        return safeApiCall(
+            call = {
+                Network.ticketNetworkDao.fetchTicketsAsync(
+                    BuildConfig.API_VERSION,
+                    param.userSettings.countryCode,
+                    param.userSettings.currencyCode,
+                    param.userSettings.localeCode,
+                    originPlace,
+                    destinationPlace,
+                    param.departureDate,
+                    "",
+                    BuildConfig.API_KEY
+                ).await()
+            },
+            error = "Error fetching tickets"
+        )
+    }
+
     private suspend fun getPlaceId(param: TicketSearchParams, query: String): String {
         var result = ""
 
-        val response = Network.placeNetworkDao.getPlaces(
-            BuildConfig.API_VERSION,
-            param.userSettings.countryCode,
-            param.userSettings.currencyCode,
-            param.userSettings.localeCode,
-            query,
-            BuildConfig.API_KEY
-        ).await()
+        val response = safeApiCall(
+            call = {
+                Network.placeNetworkDao.fetchPlacesAsync(
+                    BuildConfig.API_VERSION,
+                    param.userSettings.countryCode,
+                    param.userSettings.currencyCode,
+                    param.userSettings.localeCode,
+                    query,
+                    BuildConfig.API_KEY
+                ).await()
+            },
+            error = "Error fetching place"
+        )
 
-        if (response.Places.isNotEmpty()) {
+        if (response?.Places?.isNotEmpty() == true) {
             result = response.asDatabaseModel()[0].placeCode
         }
 
         return result
     }
-
-//    withContext(Dispatchers.IO) {
-//        result = database.ticketDao.getAll().asDomainModel()
-//    }
 }

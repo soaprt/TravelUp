@@ -1,21 +1,30 @@
 <resources>
-    <string name="app_name">TravelUp</string>
+    <string
+            translatable="false"
+            name="app_name">TravelUp</string>
+
     <string name="app_init">Initializing…</string>
-    <string name="app_init_fail">Initialization failed</string>
-    <string name="hint_departing_from">Departing from</string>
-    <string name="hint_flying_to">Flying to</string>
-    <string name="prefs">Preferences</string>
-    <string name="search">Search</string>
-    <string name="search_ticket">Search ticket</string>
-    <string name="search_result">Search result</string>
-    <string name="you_are_offline_msg">You are in offline mode.</string>
-    <string name="label_language">Language:</string>
-    <string name="label_currency">Currency:</string>
-    <string name="label_country_region">Country or\nregion:</string>
-    <string name="save">Save</string>
-    <string name="save_data_success">Data is saved</string>
-    <string name="save_data_failure">Data is not saved</string>
-    <string name="hint_departure_date">Departure date</string>
     <string name="error_input_data_require">Input data require.</string>
     <string name="error_input_date_incorrect">Input date is incorrect.</string>
+    <string name="flight">Flight</string>
+    <string name="hint_departure_from">Departing from</string>
+    <string name="hint_departure_to">Flying to</string>
+    <string name="label_flight_price">Flight price</string>
+    <string name="label_carrier_name">Carrier name:</string>
+    <string name="label_country_region">Country or\nregion:</string>
+    <string name="label_currency">Currency:</string>
+    <string name="label_departure_date">Departure date:</string>
+    <string name="label_departure_time">Departure time:</string>
+    <string name="label_language">Language:</string>
+    <string name="label_no_data">-no data-</string>
+    <string name="msg_app_init_fail">Initialization failed</string>
+    <string name="msg_save_data_failure">Data is not saved</string>
+    <string name="msg_save_data_success">Data is saved</string>
+    <string name="msg_ticket_not_found">No ticket is found.</string>
+    <string name="msg_you_are_offline">You are in offline mode.</string>
+    <string name="prefs">Preferences</string>
+    <string name="save">Save</string>
+    <string name="search">Search</string>
+    <string name="search_result">Search result</string>
+    <string name="search_ticket">Search ticket</string>
 </resources>

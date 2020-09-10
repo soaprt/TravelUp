@@ -2,6 +2,7 @@ package com.sostrovsky.travelup.repository.ticket
 
 import com.sostrovsky.travelup.TravelUpApp
 import com.sostrovsky.travelup.database.TravelUpDatabase
+import com.sostrovsky.travelup.database.entities.ticket.asDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
 
@@ -18,6 +19,12 @@ object TicketRepository : TicketContract {
     }
 
     override suspend fun getTickets(params: TicketSearchParams): List<TicketDomainModel> {
-        return TicketDataFactory.fetch(params)
+        val tickets = TicketDataFactory.fetch(params)
+
+//    withContext(Dispatchers.IO) {
+//        result = database.ticketDao.getAll().asDomainModel()
+//    }
+
+        return tickets.asDomainModel()
     }
 }

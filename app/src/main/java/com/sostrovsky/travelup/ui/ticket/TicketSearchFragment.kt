@@ -1,4 +1,4 @@
-package com.sostrovsky.travelup.ui.ticket.search
+package com.sostrovsky.travelup.ui.ticket
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -10,7 +10,6 @@ import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.databinding.FragmentSearchTicketBinding
 import com.sostrovsky.travelup.ui.MenuFragment
 import kotlinx.android.synthetic.main.fragment_search_ticket.*
-import timber.log.Timber
 import java.util.*
 
 /**
@@ -18,11 +17,11 @@ import java.util.*
  */
 class TicketSearchFragment : MenuFragment(R.layout.fragment_search_ticket) {
     private lateinit var mBinding: FragmentSearchTicketBinding
-    private lateinit var viewModel: TicketSearchViewModel
+    private lateinit var viewModel: TicketViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TicketSearchViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity()).get(TicketViewModel::class.java)
 
         mBinding = (binding as FragmentSearchTicketBinding)
         mBinding.setLifecycleOwner(this)
@@ -109,10 +108,28 @@ class TicketSearchFragment : MenuFragment(R.layout.fragment_search_ticket) {
     }
 
     private fun setSearchButton() {
+        btnSearch.setOnClickListener {
+            (requireActivity() as TicketActivity).hideSoftKeyboard(requireActivity())
+            viewModel.searchTicket()
+        }
+
+        /*
+         * Receives the Triple, where:
+         *  first = List<TicketDomainModel>
+         *  second = action (where to move if the list is not empty)
+         *  third = error message (if the list is empty)
+         */
         viewModel.ticketSearchResult.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer { data ->
-                Timber.e("SearchFragment: ticketSearchResult: $data")
+                if (viewModel.canMoveToResults) {
+                    if (data.first.isNotEmpty()) {
+                        viewModel.canMoveToResults = false
+                        (activity as TicketActivity).moveTo(data.second)
+                    } else {
+                        (activity as TicketActivity).showSnackBarEvent(data.third)
+                    }
+                }
             })
     }
 }

@@ -34,7 +34,7 @@ object PlaceFetcherOnline : DataFetcher<PlaceSearchParamsDomainModel, List<Place
         val places = mutableListOf<PlaceDBModel>()
 
         withContext(Dispatchers.IO) {
-            val response = Network.placeNetworkDao.getPlaces(
+            val response = Network.placeNetworkDao.fetchPlacesAsync(
                 BuildConfig.API_VERSION,
                 param.userSettings.countryCode,
                 param.userSettings.currencyCode,
@@ -42,13 +42,10 @@ object PlaceFetcherOnline : DataFetcher<PlaceSearchParamsDomainModel, List<Place
                 param.query,
                 BuildConfig.API_KEY).await()
 
-            Timber.e("getPlace(): response: $response")
-
-            TravelUpDatabase.getInstance(TravelUpApp.applicationContext()).placeDBDao.insertPlaces(
-                response.asDatabaseModel()
-            )
-
-            Timber.e("getPlace(): places are inserted")
+            response.body()?.asDatabaseModel()?.let {
+                TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
+                    .placeDBDao.insertPlaces(it)
+            }
         }
 
         return places
