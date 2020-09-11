@@ -1,16 +1,17 @@
 <resources>
     <string name="app_init">Инициализация…</string>
+    <string name="departure_date">Дата отправления</string>
     <string name="error_input_data_require">Необходимо ввести данные</string>
     <string name="error_input_date_incorrect">Измените дату</string>
-    <string name="flight">Рейс</string>
     <string name="hint_departure_from">Откуда</string>
     <string name="hint_departure_to">Куда</string>
-    <string name="label_flight_price">Цена перелета:</string>
     <string name="label_carrier_name">Перевозчик:</string>
     <string name="label_country_region">Страна или\nрегион:</string>
     <string name="label_currency">Валюта:</string>
-    <string name="label_departure_date">Дата отправления:</string>
+    <string name="label_departure_date">%s:</string>
     <string name="label_departure_time">Время отправления:</string>
+    <string name="label_flight">Рейс:</string>
+    <string name="label_flight_price">Цена перелета:</string>
     <string name="label_language">Язык:</string>
     <string name="label_no_data">-нет данных-</string>
     <string name="msg_app_init_fail">Ошибка инициализации</string>

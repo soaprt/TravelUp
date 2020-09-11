@@ -33,8 +33,8 @@ class TicketSearchResultFragment : MenuFragment(R.layout.fragment_search_ticket_
         val linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
 
-        val adapter = RecyclerAdapter(tickets as ArrayList<TicketDomainModel>)
+        val adapter = TicketListAdapter(tickets as ArrayList<TicketDomainModel>)
         recyclerView.adapter = adapter
-        adapter.notifyItemInserted(tickets.size-1)
+        adapter.notifyItemInserted(tickets.size - 1)
     }
 }

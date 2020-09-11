@@ -34,10 +34,10 @@
             style="@style/LabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/flight"
+            android:text="@string/label_flight"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/departureDate"
-            tools:text="@string/flight" />
+            tools:text="@string/label_flight" />
 
         <TextView
             android:id="@+id/departureFromTo"

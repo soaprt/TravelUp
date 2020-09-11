@@ -14,19 +14,20 @@ import timber.log.Timber
  * Date: 02.09.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-class RecyclerAdapter(private val tickets: ArrayList<TicketDomainModel>) : RecyclerView.Adapter<RecyclerAdapter.TicketHolder>()  {
+class TicketListAdapter(private val tickets: ArrayList<TicketDomainModel>) :
+    RecyclerView.Adapter<TicketListAdapter.TicketHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecyclerAdapter.TicketHolder {
+    ): TicketListAdapter.TicketHolder {
         val inflatedView = parent.inflate(R.layout.tickets_item_row, false)
         return TicketHolder(inflatedView)
     }
 
     override fun getItemCount(): Int = tickets.size
 
-    override fun onBindViewHolder(holder: RecyclerAdapter.TicketHolder, position: Int) {
+    override fun onBindViewHolder(holder: TicketListAdapter.TicketHolder, position: Int) {
         val itemTicket = tickets[position]
         holder.bindTicket(itemTicket)
     }
@@ -41,11 +42,15 @@ class RecyclerAdapter(private val tickets: ArrayList<TicketDomainModel>) : Recyc
 
         fun bindTicket(ticket: TicketDomainModel) {
             this.ticket = ticket
+            view.lblDepartureDate.text = (view.context.getText(R.string.label_departure_date)
+                    as String).format(view.context.getText(R.string.departure_date))
             view.departureDate.text = ticket.departureDate
-            view.departureFromTo.text = "${ticket.departureFrom} - ${ticket.departureTo}"
+            view.departureFromTo.text = (view.context.getText(R.string.departure_from_to) as String)
+                .format(ticket.departureFrom, ticket.departureTo)
             view.departureTime.text = ticket.departureTime
             view.carrierName.text = ticket.carrierName
-            view.flightPrice.text = "${ticket.flightPrice} ${ticket.flightPriceCurrency}"
+            view.flightPrice.text = (view.context.getText(R.string.flight_price) as String)
+                .format(ticket.flightPrice, ticket.flightPriceCurrency)
         }
 
         override fun onClick(v: View) {
