@@ -1,6 +1,5 @@
 package com.sostrovsky.travelup.repository.place
 
-import androidx.lifecycle.LiveData
 import com.sostrovsky.travelup.domain.place.PlaceDomainModel
 import com.sostrovsky.travelup.domain.place.PlaceSearchParamsDomainModel
 
@@ -12,5 +11,4 @@ import com.sostrovsky.travelup.domain.place.PlaceSearchParamsDomainModel
 interface PlaceContract {
     suspend fun init()
     suspend fun getPlaces(param: PlaceSearchParamsDomainModel): List<PlaceDomainModel>
-    fun getPlacesLiveData(): LiveData<List<PlaceDomainModel>>
 }

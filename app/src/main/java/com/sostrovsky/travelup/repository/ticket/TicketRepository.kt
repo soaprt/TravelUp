@@ -19,6 +19,10 @@ object TicketRepository : TicketContract {
     }
 
     override suspend fun getTickets(params: TicketSearchParams): List<TicketDomainModel> {
+//        val userSettings = Repository.getPreferences().getUserSettings()
+
+
+
         val tickets = TicketDataFactory.fetch(params)
 
 //    withContext(Dispatchers.IO) {

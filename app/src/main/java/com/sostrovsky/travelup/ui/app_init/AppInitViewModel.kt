@@ -1,6 +1,5 @@
 package com.sostrovsky.travelup.ui.app_init
 
-import android.app.Application
 import androidx.lifecycle.*
 import com.sostrovsky.travelup.repository.Repository
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
  * Date: 24.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-class AppInitViewModel(application: Application) : AndroidViewModel(application) {
+class AppInitViewModel: ViewModel() {
 
     /**
      * The job for all coroutines started by this ViewModel.

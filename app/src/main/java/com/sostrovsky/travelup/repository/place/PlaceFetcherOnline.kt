@@ -1,13 +1,10 @@
 package com.sostrovsky.travelup.repository.place
 
 import com.sostrovsky.travelup.BuildConfig
-import com.sostrovsky.travelup.TravelUpApp
-import com.sostrovsky.travelup.database.TravelUpDatabase
-import com.sostrovsky.travelup.database.entities.place.PlaceDBModel
+import com.sostrovsky.travelup.database.entities.trash.place.PlaceDBModel
 import com.sostrovsky.travelup.domain.place.PlaceDomainModel
 import com.sostrovsky.travelup.domain.place.PlaceSearchParamsDomainModel
-import com.sostrovsky.travelup.network.Network
-import com.sostrovsky.travelup.network.dto.place.asDatabaseModel
+import com.sostrovsky.travelup.network.WebService
 import com.sostrovsky.travelup.repository.DataFetcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,7 +31,7 @@ object PlaceFetcherOnline : DataFetcher<PlaceSearchParamsDomainModel, List<Place
         val places = mutableListOf<PlaceDBModel>()
 
         withContext(Dispatchers.IO) {
-            val response = Network.placeNetworkDao.fetchPlacesAsync(
+            val response = WebService.placeService.fetchPlacesAsync(
                 BuildConfig.API_VERSION,
                 param.userSettings.countryCode,
                 param.userSettings.currencyCode,
@@ -42,10 +39,10 @@ object PlaceFetcherOnline : DataFetcher<PlaceSearchParamsDomainModel, List<Place
                 param.query,
                 BuildConfig.API_KEY).await()
 
-            response.body()?.asDatabaseModel()?.let {
-                TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
-                    .placeDBDao.insertPlaces(it)
-            }
+//            response.body()?.asDatabaseModel()?.let {
+//                TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
+//                    .placeDBDao.insertPlaces(it)
+//            }
         }
 
         return places

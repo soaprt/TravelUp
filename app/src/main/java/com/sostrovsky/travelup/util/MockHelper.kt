@@ -1,6 +1,6 @@
 package com.sostrovsky.travelup.util
 
-import com.sostrovsky.travelup.network.dto.preferences.CurrencyFromJSON
+import com.sostrovsky.travelup.network.dto.settings.CurrencyFromJSON
 import com.sostrovsky.travelup.network.dto.ticket.*
 
 /**

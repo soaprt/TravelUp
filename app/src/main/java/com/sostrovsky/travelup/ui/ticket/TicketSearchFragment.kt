@@ -7,30 +7,30 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.sostrovsky.travelup.R
-import com.sostrovsky.travelup.databinding.FragmentSearchTicketBinding
+import com.sostrovsky.travelup.databinding.FragmentTicketSearchBinding
 import com.sostrovsky.travelup.ui.MenuFragment
-import kotlinx.android.synthetic.main.fragment_search_ticket.*
+import kotlinx.android.synthetic.main.fragment_ticket_search.*
 import java.util.*
 
 /**
  * Fragment for searching tickets.
  */
-class TicketSearchFragment : MenuFragment(R.layout.fragment_search_ticket) {
-    private lateinit var mBinding: FragmentSearchTicketBinding
+class TicketSearchFragment : MenuFragment(R.layout.fragment_ticket_search) {
+    private lateinit var mBinding: FragmentTicketSearchBinding
     private lateinit var viewModel: TicketViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(requireActivity()).get(TicketViewModel::class.java)
 
-        mBinding = (binding as FragmentSearchTicketBinding)
+        mBinding = (binding as FragmentTicketSearchBinding)
         mBinding.setLifecycleOwner(this)
         mBinding.searchViewModel = viewModel
 
-        viewModel.userSettings.observe(viewLifecycleOwner, androidx.lifecycle.Observer { data ->
-            viewModel.placeSearchParams.userSettings = data
-            viewModel.ticketSearchParams.userSettings = data
-        })
+//        viewModel.userSettings.observe(viewLifecycleOwner, androidx.lifecycle.Observer { data ->
+//            viewModel.placeSearchParams.userSettings = data
+//            viewModel.ticketSearchParams.userSettings = data
+//        })
 
         setViewItems()
     }

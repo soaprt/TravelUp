@@ -19,7 +19,7 @@
     <string name="msg_save_data_success">Данные сохранены</string>
     <string name="msg_ticket_not_found">Билеты не найдены</string>
     <string name="msg_you_are_offline">Нет подключения к Интернет</string>
-    <string name="prefs">Настройки</string>
+    <string name="settings">Настройки</string>
     <string name="save">Сохранить</string>
     <string name="search">Поиск</string>
     <string name="search_result">Результы поиска</string>

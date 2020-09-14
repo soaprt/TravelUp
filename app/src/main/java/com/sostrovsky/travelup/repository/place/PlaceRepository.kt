@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.sostrovsky.travelup.TravelUpApp
 import com.sostrovsky.travelup.database.TravelUpDatabase
-import com.sostrovsky.travelup.database.entities.place.asDomainModel
+import com.sostrovsky.travelup.database.entities.trash.place.asDomainModel
 import com.sostrovsky.travelup.domain.place.PlaceDomainModel
 import com.sostrovsky.travelup.domain.place.PlaceSearchParamsDomainModel
 import timber.log.Timber
@@ -26,9 +26,9 @@ object PlaceRepository : PlaceContract {
         return PlaceDataFactory.fetch(param)
     }
 
-    override fun getPlacesLiveData(): LiveData<List<PlaceDomainModel>> {
-        return Transformations.map(database.placeDBDao.getPlaces()) {
-            it.asDomainModel()
-        }
-    }
+//    override fun getPlacesLiveData(): LiveData<List<PlaceDomainModel>> {
+//        return Transformations.map(database.placeDBDao.getPlaces()) {
+//            it.asDomainModel()
+//        }
+//    }
 }

@@ -23,7 +23,7 @@
     <string name="msg_save_data_success">Data is saved</string>
     <string name="msg_ticket_not_found">No ticket is found.</string>
     <string name="msg_you_are_offline">You are in offline mode.</string>
-    <string name="prefs">Preferences</string>
+    <string name="settings">Settings</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="search_result">Search result</string>

@@ -1,6 +1,6 @@
 package com.sostrovsky.travelup.domain.preferences
 
-import com.sostrovsky.travelup.database.entities.preferences.UserSettingsDBModel
+import com.sostrovsky.travelup.database.entities.trash.UserSettingsDBModel
 
 /**
  * Author: Sergey Ostrovsky

@@ -3,11 +3,11 @@ package com.sostrovsky.travelup.repository.ticket
 import com.sostrovsky.travelup.BuildConfig
 import com.sostrovsky.travelup.database.entities.ticket.TicketDBModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
-import com.sostrovsky.travelup.network.Network
+import com.sostrovsky.travelup.network.WebService
 import com.sostrovsky.travelup.network.dto.place.asDatabaseModel
 import com.sostrovsky.travelup.network.dto.ticket.TicketsResponse
 import com.sostrovsky.travelup.network.dto.ticket.asDatabaseModel
-import com.sostrovsky.travelup.network.safeApiCall
+import com.sostrovsky.travelup.util.network.safeApiCall
 import com.sostrovsky.travelup.repository.DataFetcher
 import com.sostrovsky.travelup.util.mockedTicketsResponse
 import timber.log.Timber
@@ -68,7 +68,7 @@ object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>
     ): TicketsResponse? {
         return safeApiCall(
             call = {
-                Network.ticketNetworkDao.fetchTicketsAsync(
+                WebService.ticketService.fetchTicketsAsync(
                     BuildConfig.API_VERSION,
                     param.userSettings.countryCode,
                     param.userSettings.currencyCode,
@@ -89,7 +89,7 @@ object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>
 
         val response = safeApiCall(
             call = {
-                Network.placeNetworkDao.fetchPlacesAsync(
+                WebService.placeService.fetchPlacesAsync(
                     BuildConfig.API_VERSION,
                     param.userSettings.countryCode,
                     param.userSettings.currencyCode,

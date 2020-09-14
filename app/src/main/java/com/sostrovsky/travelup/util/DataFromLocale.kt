@@ -27,6 +27,6 @@ fun getCountryCodeFromLocale(locale: Locale = Locale.getDefault()): String {
     return locale.country.toLowerCase()
 }
 
-fun getCountryLabelFromLocale(locale: Locale = Locale.getDefault()): String {
+fun getCountryNameFromLocale(locale: Locale = Locale.getDefault()): String {
     return locale.displayCountry.capitalize()
 }

@@ -1,6 +1,6 @@
 package com.sostrovsky.travelup.network.dto.place
 
-import com.sostrovsky.travelup.database.entities.place.PlaceDBModel
+import com.sostrovsky.travelup.database.entities.trash.place.PlaceDBModel
 import com.sostrovsky.travelup.util.placeCodeFromPlaceId
 import com.squareup.moshi.JsonClass
 

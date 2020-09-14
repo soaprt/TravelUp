@@ -1,7 +1,7 @@
 package com.sostrovsky.travelup.network.dto.ticket
 
 import com.sostrovsky.travelup.database.entities.ticket.TicketDBModel
-import com.sostrovsky.travelup.network.dto.preferences.CurrencyFromJSON
+import com.sostrovsky.travelup.network.dto.settings.CurrencyFromJSON
 import com.sostrovsky.travelup.util.isoTimeToLocalTime
 import com.sostrovsky.travelup.util.isoDateToLocalDate
 import com.squareup.moshi.JsonClass

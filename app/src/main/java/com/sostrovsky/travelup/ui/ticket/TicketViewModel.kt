@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.TravelUpApp
-import com.sostrovsky.travelup.domain.place.PlaceSearchParamsDomainModel
-import com.sostrovsky.travelup.domain.preferences.UserSettingsDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
 import com.sostrovsky.travelup.repository.Repository
@@ -38,8 +36,8 @@ class TicketViewModel : ViewModel() {
     /**
      * The data source this ViewModel will fetch results from.
      */
-    private val preferencesRepository = Repository.getPreferences()
-    private val ticketRepository = Repository.getTickets()
+//    private val preferencesRepository = Repository.getPreferences()
+//    private val ticketRepository = Repository.getTickets()
 
     // Live Data
     private var _searchButtonVisible = MutableLiveData<Boolean>()
@@ -51,21 +49,21 @@ class TicketViewModel : ViewModel() {
     val ticketSearchResult: LiveData<Triple<List<TicketDomainModel>, NavDirections, String>>
         get() = _ticketSearchResult
 
-    private var _userSettings = MutableLiveData<UserSettingsDomainModel>()
-    val userSettings: LiveData<UserSettingsDomainModel>
-        get() = _userSettings
+//    private var _userSettings = MutableLiveData<UserSettingsDomainModel>()
+//    val userSettings: LiveData<UserSettingsDomainModel>
+//        get() = _userSettings
 
     val departureDate = MutableLiveData<String>()
 
     init {
         viewModelScope.launch {
             _searchButtonVisible.value = false
-            _userSettings.value = preferencesRepository.getUserSettings()
+//            _userSettings.value = preferencesRepository.getUserSettings()
         }
     }
 
     // Real Time Data
-    val placeSearchParams = PlaceSearchParamsDomainModel()
+//    val placeSearchParams = PlaceSearchParamsDomainModel()
     val ticketSearchParams = TicketSearchParams()
 
     private val inputRequireError = TravelUpApp.applicationContext()
@@ -137,11 +135,11 @@ class TicketViewModel : ViewModel() {
         viewModelScope.launch {
             disableSearchButton()
             canMoveToResults = true
-            _ticketSearchResult.value = Triple(
-                ticketRepository.getTickets(ticketSearchParams),
-                TicketSearchFragmentDirections.actionSearchTicketFragmentToSearchTicketResultFragment(),
-                ticketNotFoundMessage
-            )
+//            _ticketSearchResult.value = Triple(
+//                ticketRepository.getTickets(ticketSearchParams),
+//                TicketSearchFragmentDirections.actionSearchTicketFragmentToSearchTicketResultFragment(),
+//                ticketNotFoundMessage
+//            )
             enableSearchButton()
         }
     }
