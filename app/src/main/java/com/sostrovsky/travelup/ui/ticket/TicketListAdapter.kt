@@ -45,12 +45,10 @@ class TicketListAdapter(private val tickets: ArrayList<TicketDomainModel>) :
             view.lblDepartureDate.text = (view.context.getText(R.string.label_departure_date)
                     as String).format(view.context.getText(R.string.departure_date))
             view.departureDate.text = ticket.departureDate
-            view.departureFromTo.text = (view.context.getText(R.string.departure_from_to) as String)
-                .format(ticket.departureFrom, ticket.departureTo)
+            view.departureFromTo.text = ticket.departureFromTo
             view.departureTime.text = ticket.departureTime
             view.carrierName.text = ticket.carrierName
-            view.flightPrice.text = (view.context.getText(R.string.flight_price) as String)
-                .format(ticket.flightPrice, ticket.flightPriceCurrency)
+            view.flightPrice.text = ticket.flightPrice
         }
 
         override fun onClick(v: View) {

@@ -17,7 +17,7 @@
         android:layout_height="match_parent">
 
         <EditText
-            android:id="@+id/edtDestinationFrom"
+            android:id="@+id/edtPlaceFrom"
             style="@style/InputFieldStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/field_height"
@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/edtFlyingTo"
+            android:id="@+id/edtPlaceTo"
             style="@style/InputFieldStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/field_height"
@@ -39,7 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtDestinationFrom" />
+            app:layout_constraintTop_toBottomOf="@+id/edtPlaceFrom" />
 
         <EditText
             android:id="@+id/edtDepartureDate"
@@ -52,7 +52,7 @@
             android:inputType="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtFlyingTo"
+            app:layout_constraintTop_toBottomOf="@+id/edtPlaceTo"
             tools:ignore="TextFields" />
 
         <Button
@@ -60,7 +60,7 @@
             style="@style/ButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="@{searchViewModel.searchButtonVisible}"
+            android:enabled="@{searchViewModel.fetchSearchButtonVisible()}"
             android:text="@string/search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

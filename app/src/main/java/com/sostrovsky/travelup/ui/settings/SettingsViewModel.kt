@@ -43,6 +43,18 @@ class SettingsViewModel : ViewModel() {
     private var countries = MutableLiveData<Pair<List<CountryDomain>, MutableList<Int>>>()
     private var countriesLoaded = false
 
+    val context = TravelUpApp.applicationContext()
+    private val saveDataSuccess = context.getString(R.string.msg_save_data_success)
+    private val saveDataFailure = context.getString(R.string.msg_save_data_failure)
+
+    private var _saveButtonVisible = MutableLiveData<Boolean>()
+    val saveButtonVisible: LiveData<Boolean>
+        get() = _saveButtonVisible
+
+    private var _showSnackBarEvent = MutableLiveData<Pair<Boolean, String>>()
+    val showSnackBarEvent: LiveData<Pair<Boolean, String>>
+        get() = _showSnackBarEvent
+
     fun fetchLanguages(): LiveData<Pair<List<LanguageDomain>, MutableList<Int>>> {
         if (!languagesLoaded) {
             viewModelScope.launch {
@@ -91,10 +103,6 @@ class SettingsViewModel : ViewModel() {
         checkSaveButton()
     }
 
-    fun getLastListItem(list: MutableList<Int>): Int {
-        return list.takeLast(1)[0]
-    }
-
     private fun setNewPosition(list: MutableList<Int>, position: Int) {
         if (position == getLastListItem(list)) return
 
@@ -110,29 +118,6 @@ class SettingsViewModel : ViewModel() {
             }
         }
     }
-
-    private fun <T> valueChanged(list: MutableLiveData<Pair<List<T>, MutableList<Int>>>): Boolean {
-        return list.value?.second?.size?.let { it > 1 } ?: false
-    }
-
-    private fun <T> resetPosition(list: MutableLiveData<Pair<List<T>, MutableList<Int>>>) {
-        list.value?.second?.let {
-            it[0] = it[1]
-            it.removeAt(1)
-        }
-    }
-
-    private var _saveButtonVisible = MutableLiveData<Boolean>()
-    val saveButtonVisible: LiveData<Boolean>
-        get() = _saveButtonVisible
-
-    private var _showSnackBarEvent = MutableLiveData<Pair<Boolean, String>>()
-    val showSnackBarEvent: LiveData<Pair<Boolean, String>>
-        get() = _showSnackBarEvent
-
-    val context = TravelUpApp.applicationContext()
-    private val saveDataSuccess = context.getString(R.string.msg_save_data_success)
-    private val saveDataFailure = context.getString(R.string.msg_save_data_failure)
 
     private fun checkSaveButton() {
         val result = (valueChanged(languages) || valueChanged(currencies) ||
@@ -162,6 +147,10 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
+    fun getLastListItem(list: MutableList<Int>): Int {
+        return list.takeLast(1)[0]
+    }
+
     private fun resetPositions() {
         if (valueChanged(languages)) {
             resetPosition(languages)
@@ -176,9 +165,19 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
+    private fun <T> valueChanged(list: MutableLiveData<Pair<List<T>, MutableList<Int>>>): Boolean {
+        return list.value?.second?.size?.let { it > 1 } ?: false
+    }
+
+    private fun <T> resetPosition(list: MutableLiveData<Pair<List<T>, MutableList<Int>>>) {
+        list.value?.second?.let {
+            it[0] = it[1]
+            it.removeAt(1)
+        }
+    }
+
     private fun showSaveSuccess() {
         _showSnackBarEvent.value = Pair(true, saveDataSuccess)
-
     }
 
     private fun showSaveFailure() {

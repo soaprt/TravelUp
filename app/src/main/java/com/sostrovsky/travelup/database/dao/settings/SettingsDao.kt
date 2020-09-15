@@ -25,6 +25,9 @@ interface SettingsDao {
     @Query("SELECT * FROM settings WHERE is_selected=1")
     fun getSelected(): Settings
 
+    @Query("SELECT id FROM settings WHERE is_selected=1")
+    fun getSelectedSettingsId(): Long
+
     @Insert
     fun insert(settings: Settings): Long
 

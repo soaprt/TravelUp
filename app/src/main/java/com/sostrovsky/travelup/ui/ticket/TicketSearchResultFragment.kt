@@ -22,7 +22,7 @@ class TicketSearchResultFragment : MenuFragment(R.layout.fragment_ticket_search_
         viewModel = ViewModelProviders.of(requireActivity()).get(TicketViewModel::class.java)
         mBinding = (binding as FragmentTicketSearchResultBinding)
 
-        viewModel.ticketSearchResult.observe(
+        viewModel.fetchTicketSearchResult().observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer { data ->
                 setRecyclerView(data.first)

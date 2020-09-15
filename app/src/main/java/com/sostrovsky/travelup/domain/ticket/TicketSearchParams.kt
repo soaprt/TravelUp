@@ -1,17 +1,19 @@
 package com.sostrovsky.travelup.domain.ticket
 
-import com.sostrovsky.travelup.domain.preferences.UserSettingsDomainModel
-
 /**
  * Author: Sergey Ostrovsky
  * Date: 20.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-data class TicketSearchParams(var destinationFrom: String = "", var flyingTo: String = "",
-                              var departureDate: String = "",
-                              var userSettings: UserSettingsDomainModel = UserSettingsDomainModel()) {
+data class TicketSearchParams(
+    val placeFrom: String, val placeTo: String,
+    val departureDate: String, val countryCode: String,
+    val currencyCode: String, val localeCode: String
+) {
+
     override fun toString(): String {
-        return "TicketSearchParams(destinationFrom='$destinationFrom', flyingTo='$flyingTo', " +
-                "departureDate='$departureDate', userSettings=$userSettings)"
+        return "TicketSearchParams(placeFrom='$placeFrom', placeTo='$placeTo', " +
+                "departureDate='$departureDate', countryCode='$countryCode', " +
+                "currencyCode='$currencyCode', localeCode='$localeCode')"
     }
 }

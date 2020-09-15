@@ -19,7 +19,7 @@ object Repository {
         withContext(Dispatchers.IO) {
 //            getPlaces().init()
             getSettingsRepo().init()
-//            getTickets().init()
+            getTickets().init()
 
             isInitComplete = true
         }
@@ -30,11 +30,11 @@ object Repository {
 //        return PlaceRepository
 //    }
 
-    fun getSettingsRepo(): SettingsContract {
+    private fun getSettingsRepo(): SettingsContract {
         return SettingsRepository
     }
 
-    fun getTickets(): TicketContract {
+    private fun getTickets(): TicketContract {
         return TicketRepository
     }
 }

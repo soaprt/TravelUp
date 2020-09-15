@@ -6,5 +6,5 @@ package com.sostrovsky.travelup.repository
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 interface DataFetcher<V, R> {
-    suspend fun fetch(param: V): R
+    suspend fun fetch(params: V): R
 }

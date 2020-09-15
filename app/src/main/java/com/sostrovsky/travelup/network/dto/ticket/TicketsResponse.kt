@@ -1,6 +1,6 @@
 package com.sostrovsky.travelup.network.dto.ticket
 
-import com.sostrovsky.travelup.database.entities.ticket.TicketDBModel
+import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.network.dto.settings.CurrencyFromJSON
 import com.sostrovsky.travelup.util.isoTimeToLocalTime
 import com.sostrovsky.travelup.util.isoDateToLocalDate
@@ -41,21 +41,20 @@ data class TicketPlaceFromJSON(
 data class CarrierFromJSON(val CarrierId: Int, val Name: String)
 
 /**
- * Convert Network results to database objects
+ * Convert Network results to domain objects
  */
-fun TicketsResponse.asDatabaseModel(): List<TicketDBModel> {
-    val tickets = mutableListOf<TicketDBModel>()
+fun TicketsResponse.asDomainModel(): List<TicketDomainModel> {
+    val tickets = mutableListOf<TicketDomainModel>()
 
     Quotes.forEach {
         tickets.add(
-            TicketDBModel(
-                id = it.QuoteId,
+            TicketDomainModel(
                 departureDate = isoDateToLocalDate(it.OutboundLeg.DepartureDate),
                 departureTime = isoTimeToLocalTime(it.QuoteDateTime),
                 departureFrom = placeIdToPlaceName(Places, it.OutboundLeg.OriginId),
                 departureTo = placeIdToPlaceName(Places, it.OutboundLeg.DestinationId),
                 carrierName = carrierIdToCarrierName(Carriers, it.OutboundLeg.CarrierIds[0]),
-                flightPrice = it.MinPrice.toString(),
+                _flightPrice = it.MinPrice.toLong(),
                 flightPriceCurrency = Currencies[0].Code
             )
         )

@@ -1,15 +1,15 @@
 package com.sostrovsky.travelup.repository.ticket
 
 import com.sostrovsky.travelup.BuildConfig
-import com.sostrovsky.travelup.database.entities.ticket.TicketDBModel
+import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
 import com.sostrovsky.travelup.network.WebService
 import com.sostrovsky.travelup.network.dto.place.asDatabaseModel
 import com.sostrovsky.travelup.network.dto.ticket.TicketsResponse
-import com.sostrovsky.travelup.network.dto.ticket.asDatabaseModel
-import com.sostrovsky.travelup.util.network.safeApiCall
+import com.sostrovsky.travelup.network.dto.ticket.asDomainModel
 import com.sostrovsky.travelup.repository.DataFetcher
 import com.sostrovsky.travelup.util.mockedTicketsResponse
+import com.sostrovsky.travelup.util.network.safeApiCall
 import timber.log.Timber
 
 /**
@@ -17,21 +17,21 @@ import timber.log.Timber
  * Date: 26.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>> {
-    override suspend fun fetch(param: TicketSearchParams): List<TicketDBModel> {
-        Timber.e("TicketFetcherOnline: fetch()")
-        val tickets = mutableListOf<TicketDBModel>()
+object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDomainModel>> {
+    override suspend fun fetch(params: TicketSearchParams): List<TicketDomainModel> {
+        Timber.e("TicketWebServiceFetcher: fetch()")
+        val tickets = mutableListOf<TicketDomainModel>()
 
         val debug = false
 
         if (debug) {
             fetchMockedTickets()?.let {
                 if (it.Quotes.isNotEmpty()) {
-                    tickets.addAll(it.asDatabaseModel())
+                    tickets.addAll(it.asDomainModel())
                 }
             }
         } else {
-            val originPlace = getPlaceId(param, param.destinationFrom)
+            val originPlace = getPlaceId(params, params.placeFrom)
             var destinationPlace = ""
             var continueSearch = true
 
@@ -40,16 +40,16 @@ object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>
             }
 
             if (continueSearch) {
-                destinationPlace = getPlaceId(param, param.flyingTo)
+                destinationPlace = getPlaceId(params, params.placeTo)
                 if (destinationPlace.isEmpty()) {
                     continueSearch = false
                 }
             }
 
             if (continueSearch) {
-                fetchTickets(originPlace, destinationPlace, param)?.let {
+                fetchTickets(originPlace, destinationPlace, params)?.let {
                     if (it.Quotes.isNotEmpty()) {
-                        tickets.addAll(it.asDatabaseModel())
+                        tickets.addAll(it.asDomainModel())
                     }
                 }
             }
@@ -62,20 +62,19 @@ object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>
         return mockedTicketsResponse()
     }
 
-    private suspend fun fetchTickets(
-        originPlace: String, destinationPlace: String,
-        param: TicketSearchParams
+    private suspend fun fetchTickets(originPlace: String, destinationPlace: String,
+        params: TicketSearchParams
     ): TicketsResponse? {
         return safeApiCall(
             call = {
                 WebService.ticketService.fetchTicketsAsync(
                     BuildConfig.API_VERSION,
-                    param.userSettings.countryCode,
-                    param.userSettings.currencyCode,
-                    param.userSettings.localeCode,
+                    params.countryCode,
+                    params.currencyCode,
+                    params.localeCode,
                     originPlace,
                     destinationPlace,
-                    param.departureDate,
+                    params.departureDate,
                     "",
                     BuildConfig.API_KEY
                 ).await()
@@ -84,16 +83,16 @@ object TicketFetcherOnline : DataFetcher<TicketSearchParams, List<TicketDBModel>
         )
     }
 
-    private suspend fun getPlaceId(param: TicketSearchParams, query: String): String {
+    private suspend fun getPlaceId(params: TicketSearchParams, query: String): String {
         var result = ""
 
         val response = safeApiCall(
             call = {
                 WebService.placeService.fetchPlacesAsync(
                     BuildConfig.API_VERSION,
-                    param.userSettings.countryCode,
-                    param.userSettings.currencyCode,
-                    param.userSettings.localeCode,
+                    params.countryCode,
+                    params.currencyCode,
+                    params.localeCode,
                     query,
                     BuildConfig.API_KEY
                 ).await()

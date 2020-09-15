@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">TravelUp</string>
-    <string name="departure_from_to" translatable="false">%s - %s</string>
-    <string name="flight_price" translatable="false">%s %s</string>
 
     <string name="app_init">Initializing…</string>
     <string name="departure_date">Departure date</string>

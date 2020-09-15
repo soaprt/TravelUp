@@ -7,8 +7,7 @@ import androidx.navigation.NavDirections
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.TravelUpApp
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
-import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
-import com.sostrovsky.travelup.repository.Repository
+import com.sostrovsky.travelup.repository.ticket.TicketRepository.fetchTicket
 import com.sostrovsky.travelup.util.calendarDateToLocalDate
 import com.sostrovsky.travelup.util.isNotPastDate
 import kotlinx.coroutines.CoroutineScope
@@ -33,76 +32,64 @@ class TicketViewModel : ViewModel() {
      */
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    /**
-     * The data source this ViewModel will fetch results from.
-     */
-//    private val preferencesRepository = Repository.getPreferences()
-//    private val ticketRepository = Repository.getTickets()
+    private var placeFrom = ""
+    private var placeFromComplete = false
 
-    // Live Data
-    private var _searchButtonVisible = MutableLiveData<Boolean>()
-    val searchButtonVisible: LiveData<Boolean>
-        get() = _searchButtonVisible
+    private var placeTo = ""
+    private var placeToComplete = false
 
-    private val _ticketSearchResult = MutableLiveData<Triple<List<TicketDomainModel>, NavDirections,
-            String>>()
-    val ticketSearchResult: LiveData<Triple<List<TicketDomainModel>, NavDirections, String>>
-        get() = _ticketSearchResult
-
-//    private var _userSettings = MutableLiveData<UserSettingsDomainModel>()
-//    val userSettings: LiveData<UserSettingsDomainModel>
-//        get() = _userSettings
-
-    val departureDate = MutableLiveData<String>()
-
-    init {
-        viewModelScope.launch {
-            _searchButtonVisible.value = false
-//            _userSettings.value = preferencesRepository.getUserSettings()
-        }
-    }
-
-    // Real Time Data
-//    val placeSearchParams = PlaceSearchParamsDomainModel()
-    val ticketSearchParams = TicketSearchParams()
-
-    private val inputRequireError = TravelUpApp.applicationContext()
-        .getText(R.string.error_input_data_require)
-
-    private val inputDateError = TravelUpApp.applicationContext()
-        .getText(R.string.error_input_date_incorrect)
-
-    private var destinationFromComplete = false
-    private var flyingToComplete = false
+    private val departureDate = MutableLiveData<String>()
     private var departureDateComplete = false
 
-    var canMoveToResults: Boolean = false
+    private val searchButtonVisible = MutableLiveData<Boolean>()
+//    val searchButtonVisible: LiveData<Boolean>
+//        get() = _searchButtonVisible
 
-    val context = TravelUpApp.applicationContext()
-    private val ticketNotFoundMessage = context.getString(R.string.msg_ticket_not_found)
+    private val ticketSearchResult = MutableLiveData<Triple<List<TicketDomainModel>, NavDirections,
+            String>>()
 
-    fun setDestinationFrom(destinationFrom: CharSequence?): CharSequence? {
+    fun fetchPlaceFrom() : String {
+        return placeFrom
+    }
+
+    fun fetchPlaceTo() : String {
+        return placeTo
+    }
+
+    fun fetchDepartureDate(): LiveData<String> {
+        return departureDate
+    }
+
+    fun fetchSearchButtonVisible() : LiveData<Boolean> {
+        return searchButtonVisible
+    }
+
+    fun fetchTicketSearchResult(): LiveData<Triple<List<TicketDomainModel>, NavDirections, String>> {
+        return ticketSearchResult
+    }
+
+    fun setPlaceFrom(text: CharSequence?): CharSequence? {
         var setResult: CharSequence? = inputRequireError
 
-        destinationFromComplete = destinationFrom?.isNotEmpty() ?: false
+        placeFromComplete = text?.isNotEmpty() ?: false
         checkSearchButton()
 
-        if (destinationFromComplete) {
-            ticketSearchParams.destinationFrom = destinationFrom!!.toString()
+        if (placeFromComplete) {
+            this.placeFrom = text!!.toString()
             setResult = null
         }
 
         return setResult
     }
 
-    fun setFlyingTo(flyingTo: CharSequence?): CharSequence? {
+    fun setPlaceTo(text: CharSequence?): CharSequence? {
         var setResult: CharSequence? = inputRequireError
 
-        flyingToComplete = flyingTo?.isNotEmpty() ?: false
+        placeToComplete = text?.isNotEmpty() ?: false
         checkSearchButton()
 
-        if (flyingToComplete) {
-            ticketSearchParams.flyingTo = flyingTo!!.toString()
+        if (placeToComplete) {
+            this.placeTo = text!!.toString()
             setResult = null
         }
 
@@ -117,7 +104,6 @@ class TicketViewModel : ViewModel() {
 
         departureDate.value = calendarDateToLocalDate(selectedDate.time).let {
             if (departureDateComplete) {
-                ticketSearchParams.departureDate = it
                 setResult = null
             }
             it
@@ -127,29 +113,42 @@ class TicketViewModel : ViewModel() {
     }
 
     private fun checkSearchButton() {
-        val result = (destinationFromComplete && flyingToComplete && departureDateComplete)
-        _searchButtonVisible.postValue(result)
+        val result = (placeFromComplete && placeToComplete && departureDateComplete)
+        searchButtonVisible.postValue(result)
     }
+
+    private val inputRequireError = TravelUpApp.applicationContext()
+        .getText(R.string.error_input_data_require)
+
+    private val inputDateError = TravelUpApp.applicationContext()
+        .getText(R.string.error_input_date_incorrect)
+
+    var canMoveToResults: Boolean = false
+
+    val context = TravelUpApp.applicationContext()
+    private val ticketNotFoundMessage = context.getString(R.string.msg_ticket_not_found)
 
     fun searchTicket() {
         viewModelScope.launch {
             disableSearchButton()
             canMoveToResults = true
-//            _ticketSearchResult.value = Triple(
-//                ticketRepository.getTickets(ticketSearchParams),
-//                TicketSearchFragmentDirections.actionSearchTicketFragmentToSearchTicketResultFragment(),
-//                ticketNotFoundMessage
-//            )
+
+            ticketSearchResult.value = Triple(
+                fetchTicket(placeFrom, placeTo, departureDate.value!!),
+                TicketSearchFragmentDirections.actionTicketSearchFragmentToTicketSearchResultFragment(),
+                ticketNotFoundMessage
+            )
+
             enableSearchButton()
         }
     }
 
     private fun enableSearchButton() {
-        _searchButtonVisible.postValue(true)
+        searchButtonVisible.postValue(true)
     }
 
     private fun disableSearchButton() {
-        _searchButtonVisible.postValue(false)
+        searchButtonVisible.postValue(false)
     }
 
     override fun onCleared() {
