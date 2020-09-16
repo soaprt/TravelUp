@@ -4,7 +4,6 @@ import com.sostrovsky.travelup.TravelUpApp
 import com.sostrovsky.travelup.database.TravelUpDatabase
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
-import com.sostrovsky.travelup.util.network.NetworkHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -15,18 +14,16 @@ import timber.log.Timber
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 object TicketRepository : TicketContract {
-    lateinit var database: TravelUpDatabase
-
-    override suspend fun init() {
-        database = TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
-    }
+    val database = TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
 
     override suspend fun fetchTicket(placeFrom: String, placeTo: String, departureDate: String):
             List<TicketDomainModel> {
-        Timber.e("1_TicketRepository: fetchTicket():" +
-                "\nplaceFrom: $placeFrom" +
-                "\nplaceTo: $placeTo" +
-                "\ndepartureDate: $departureDate ")
+        Timber.e(
+            "1_TicketRepository: fetchTicket():" +
+                    "\nplaceFrom: $placeFrom" +
+                    "\nplaceTo: $placeTo" +
+                    "\ndepartureDate: $departureDate "
+        )
 
         val result = mutableListOf<TicketDomainModel>()
 
@@ -34,28 +31,22 @@ object TicketRepository : TicketContract {
             val params = generateTicketSearchParams(placeFrom, placeTo, departureDate)
 
             if (params != null) {
-                val cachedData = TicketSearchFactory.fetch(true, params)
-
-                if (cachedData.isEmpty()) {
-                    if (NetworkHelper.isAvailable) {
-                        val webServiceData = TicketSearchFactory.fetch(false, params)
-                        result.addAll(webServiceData)
-                    } else {
-                    }
-                } else {
-                    result.addAll(cachedData)
-                }
+                result.addAll(TicketCacheFetcher.fetch(params))
             }
         }
 
-        Timber.e("2_TicketRepository: fetchTicket():" +
-                "\nresult size = ${result.size}")
+        Timber.e(
+            "2_TicketRepository: fetchTicket():" +
+                    "\nresult size = ${result.size}"
+        )
 
         return result
     }
 
-    private suspend fun generateTicketSearchParams(placeFrom: String, placeTo: String,
-                                           departureDate: String): TicketSearchParams? {
+    private suspend fun generateTicketSearchParams(
+        placeFrom: String, placeTo: String,
+        departureDate: String
+    ): TicketSearchParams? {
         var result: TicketSearchParams? = null
 
         withContext(Dispatchers.IO) {

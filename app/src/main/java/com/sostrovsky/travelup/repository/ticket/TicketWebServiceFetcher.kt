@@ -4,10 +4,10 @@ import com.sostrovsky.travelup.BuildConfig
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
 import com.sostrovsky.travelup.network.WebService
-import com.sostrovsky.travelup.network.dto.place.asDatabaseModel
 import com.sostrovsky.travelup.network.dto.ticket.TicketsResponse
 import com.sostrovsky.travelup.network.dto.ticket.asDomainModel
 import com.sostrovsky.travelup.repository.DataFetcher
+import com.sostrovsky.travelup.repository.ticket.market_place.MarketPlaceRepository
 import com.sostrovsky.travelup.util.mockedTicketsResponse
 import com.sostrovsky.travelup.util.network.safeApiCall
 import timber.log.Timber
@@ -31,7 +31,10 @@ object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDoma
                 }
             }
         } else {
-            val originPlace = getPlaceId(params, params.placeFrom)
+            val originPlace = MarketPlaceRepository.fetchCodeFromWebService(
+                params,
+                params.placeFrom
+            )
             var destinationPlace = ""
             var continueSearch = true
 
@@ -40,14 +43,17 @@ object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDoma
             }
 
             if (continueSearch) {
-                destinationPlace = getPlaceId(params, params.placeTo)
+                destinationPlace = MarketPlaceRepository.fetchCodeFromWebService(
+                    params,
+                    params.placeTo
+                )
                 if (destinationPlace.isEmpty()) {
                     continueSearch = false
                 }
             }
 
             if (continueSearch) {
-                fetchTickets(originPlace, destinationPlace, params)?.let {
+                fetchFromWebService(originPlace, destinationPlace, params)?.let {
                     if (it.Quotes.isNotEmpty()) {
                         tickets.addAll(it.asDomainModel())
                     }
@@ -62,7 +68,8 @@ object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDoma
         return mockedTicketsResponse()
     }
 
-    private suspend fun fetchTickets(originPlace: String, destinationPlace: String,
+    private suspend fun fetchFromWebService(
+        originPlace: String, destinationPlace: String,
         params: TicketSearchParams
     ): TicketsResponse? {
         return safeApiCall(
@@ -81,29 +88,5 @@ object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDoma
             },
             error = "Error fetching tickets"
         )
-    }
-
-    private suspend fun getPlaceId(params: TicketSearchParams, query: String): String {
-        var result = ""
-
-        val response = safeApiCall(
-            call = {
-                WebService.placeService.fetchPlacesAsync(
-                    BuildConfig.API_VERSION,
-                    params.countryCode,
-                    params.currencyCode,
-                    params.localeCode,
-                    query,
-                    BuildConfig.API_KEY
-                ).await()
-            },
-            error = "Error fetching place"
-        )
-
-        if (response?.Places?.isNotEmpty() == true) {
-            result = response.asDatabaseModel()[0].code
-        }
-
-        return result
     }
 }

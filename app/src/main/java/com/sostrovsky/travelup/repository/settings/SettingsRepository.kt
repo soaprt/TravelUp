@@ -16,7 +16,6 @@ import com.sostrovsky.travelup.util.getCurrencyCodeFromLocale
 import com.sostrovsky.travelup.util.getFormattedLocale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -24,12 +23,10 @@ import timber.log.Timber
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 object SettingsRepository : SettingsContract {
-    lateinit var database: TravelUpDatabase
+    val database = TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
 
     @Transaction
     override suspend fun init() {
-        this.database = TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
-
         if (hasNoSettings()) {
             CountryRepository.populate()
             CurrencyRepository.populate()
@@ -58,8 +55,8 @@ object SettingsRepository : SettingsContract {
         return addedRowId[0]
     }
 
-    private suspend fun fetchSettings(): Settings? {
-        var result = mutableListOf<Settings>()
+    override suspend fun fetchSettings(): Settings? {
+        val result = mutableListOf<Settings>()
 
         withContext(Dispatchers.IO) {
             result.add(database.settingsDao.getSelected())
@@ -68,7 +65,7 @@ object SettingsRepository : SettingsContract {
         return result[0]
     }
 
-    private suspend fun fetchSettingsIdFromDB(settings: SettingsDomain): Int {
+    suspend fun fetchSettingsIdFromDB(settings: SettingsDomain): Int {
         val result = mutableListOf(0)
 
         withContext(Dispatchers.IO) {
@@ -149,7 +146,7 @@ object SettingsRepository : SettingsContract {
         )
     }
 
-    private suspend fun generateSettingsDomain(
+    suspend fun generateSettingsDomain(
         languageCode: String, currencyCode: String,
         countryCode: String
     ): SettingsDomain {

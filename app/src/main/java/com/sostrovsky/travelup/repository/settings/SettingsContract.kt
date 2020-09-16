@@ -1,5 +1,6 @@
 package com.sostrovsky.travelup.repository.settings
 
+import com.sostrovsky.travelup.database.entities.settings.Settings
 import com.sostrovsky.travelup.domain.settings.CountryDomain
 import com.sostrovsky.travelup.domain.settings.CurrencyDomain
 import com.sostrovsky.travelup.domain.settings.LanguageDomain
@@ -11,6 +12,7 @@ import com.sostrovsky.travelup.domain.settings.LanguageDomain
  */
 interface SettingsContract {
     suspend fun init()
+    suspend fun fetchSettings(): Settings?
 
     suspend fun fetchSpinnerLanguage(): Pair<List<LanguageDomain>, MutableList<Int>>
     suspend fun fetchSpinnerCurrency(): Pair<List<CurrencyDomain>, MutableList<Int>>

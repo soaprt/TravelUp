@@ -1,13 +1,12 @@
 package com.sostrovsky.travelup.repository.ticket
 
-import com.sostrovsky.travelup.database.entities.ticket.TicketSearchResult
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
 import com.sostrovsky.travelup.repository.DataFetcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.sostrovsky.travelup.repository.ticket.carrier.CarrierRepository
+import com.sostrovsky.travelup.repository.ticket.search_result.TicketSearchResultRepo
+import com.sostrovsky.travelup.util.network.NetworkHelper
 import timber.log.Timber
-import java.util.*
 
 /**
  * Author: Sergey Ostrovsky
@@ -18,171 +17,55 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
     override suspend fun fetch(params: TicketSearchParams): List<TicketDomainModel> {
         Timber.e("TicketCacheFetcher: fetch()")
 
-        return fetchTickets(params).map {
-            val carrierName = TicketRepository.database.carrierDao.getNameById(it.carrierId)
+        val tickets = mutableListOf<TicketDomainModel>()
+        tickets.addAll(fetchTicketsFromDB(params))
 
+        if (tickets.isEmpty() && NetworkHelper.isAvailable) {
+            val ticketsWebService = TicketWebServiceFetcher.fetch(params)
+            if (ticketsWebService.isNotEmpty()) {
+                tickets.addAll(savedTicketsToDB(params, ticketsWebService))
+            }
+        }
+
+        return tickets
+    }
+
+    private suspend fun fetchTicketsFromDB(params: TicketSearchParams): List<TicketDomainModel> {
+        Timber.e("1_TicketCacheFetcher: fetchTicketsFromDB()")
+
+        return TicketSearchResultRepo.fetchTickets(params).map {
             TicketDomainModel(
                 departureDate = params.departureDate,
                 departureTime = it.departureTime,
                 departureFrom = params.placeFrom,
                 departureTo = params.placeTo,
-                carrierName = carrierName,
-                _flightPrice = it.flightPrice,
+                carrierName = CarrierRepository.getNameById(it.carrierId), // carrierName,
+                _flightPriceAsLong = it.flightPrice,
                 flightPriceCurrency = params.currencyCode
             )
         }
     }
 
-    private suspend fun fetchTickets(params: TicketSearchParams) : List<TicketSearchResult>{
-        Timber.e("1_TicketCacheFetcher: fetchTickets():" +
-                "\nplaceFrom: ${params.placeFrom}" +
-                "\nplaceTo: ${params.placeTo}" +
-                "\ndepartureDate: ${params.departureDate}")
+    private suspend fun savedTicketsToDB(
+        params: TicketSearchParams,
+        tickets: List<TicketDomainModel>
+    ): List<TicketDomainModel> {
+        Timber.e(
+            "1_TicketCacheFetcher: savedTicketsToDB():" +
+                    "\ntickets size: ${tickets.size}"
+        )
 
-        val result = mutableListOf<TicketSearchResult>()
-
-        withContext(Dispatchers.IO) {
-            var canContinue = true
-
-            val settingsId = getSelectedSettingsId()
-            var ticketSearchParamsId = 0
-            val timestampValid = getTimestampValid()
-
-            Timber.e("2_TicketCacheFetcher: fetchTickets():" +
-                    "\nsettingsId: $settingsId" +
-                    "\ntimestampValid: $timestampValid")
-
-            if (settingsId <= 0) {
-                canContinue = false
-            }
-
-            Timber.e("3_TicketCacheFetcher: fetchTickets():" +
-                    "\ncanContinue: $canContinue")
-
-            if (canContinue) {
-                ticketSearchParamsId = getTicketSearchParams(params.placeFrom,
-                    params.placeTo, params.departureDate)
-
-                Timber.e("3_1_TicketCacheFetcher: fetchTickets():" +
-                        "\nticketSearchParamsId: $ticketSearchParamsId")
-
-                if (ticketSearchParamsId <= 0) {
-                    canContinue = false
-                }
-            }
-
-            Timber.e("4_TicketCacheFetcher: fetchTickets():" +
-                    "\ncanContinue: $canContinue")
-
-            if (canContinue) {
-                result.addAll(
-                    TicketRepository.database.ticketSearchResultDao.getTickets(
-                        settingsId,
-                        ticketSearchParamsId, timestampValid
-                    )
-                )
-            }
-
-            Timber.e("5_TicketCacheFetcher: fetchTickets():" +
-                    "\nresult size : ${result.size}")
+        tickets.forEach {
+            Timber.e("ticket: $it")
         }
 
-        return result
-    }
+        val insertedRows = TicketSearchResultRepo.saveTickets(params, tickets)
 
-    private suspend fun getTicketSearchParams(
-        placeFrom: String, placeTo: String,
-        departureDate: String
-    ): Int {
-        Timber.e("1_TicketCacheFetcher: getTicketSearchParams():" +
-                "\nplaceFrom: $placeFrom" +
-                "\nplaceTo: $placeTo" +
-                "\ndepartureDate: $departureDate ")
+        Timber.e(
+            "2_TicketCacheFetcher: savedTicketsToDB():" +
+                    "\ninsertedRows: $insertedRows"
+        )
 
-        val result = mutableListOf(0)
-
-        withContext(Dispatchers.IO) {
-            val isMarketPlaceDBEmpty = TicketRepository.database.marketPlaceDao.checkIfEmpty() == 0
-            Timber.e("2_TicketCacheFetcher: getTicketSearchParams():" +
-                    "\nmarketPlace is empty: $isMarketPlaceDBEmpty")
-
-            if (!isMarketPlaceDBEmpty) {
-                var canContinue = true
-
-                val marketPlaceIdFrom = getMarketPlaceId(placeFrom)
-                var marketPlaceIdTo = 0
-
-                Timber.e("2_1_TicketCacheFetcher: getTicketSearchParams():" +
-                        "\nmarketPlaceIdFrom: $marketPlaceIdFrom")
-
-                if (marketPlaceIdFrom <= 0) {
-                    canContinue = false
-                }
-
-                Timber.e("2_2_TicketCacheFetcher: getTicketSearchParams():" +
-                        "\ncanContinue: $canContinue")
-
-                if (canContinue) {
-                    marketPlaceIdTo = getMarketPlaceId(placeTo)
-
-                    Timber.e("2_2_1_TicketCacheFetcher: getTicketSearchParams():" +
-                            "\nmarketPlaceIdTo: $marketPlaceIdTo")
-
-                    if (marketPlaceIdTo <= 0) {
-                        canContinue = false
-                    }
-                }
-
-                Timber.e("2_3_TicketCacheFetcher: getTicketSearchParams():" +
-                        "\ncanContinue: $canContinue")
-
-                if (canContinue) {
-                    result[0] = TicketRepository.database.ticketSearchParamsDao.getId(
-                        marketPlaceIdFrom, marketPlaceIdTo, departureDate
-                    )
-                }
-            }
-
-            Timber.e("3_TicketCacheFetcher: getTicketSearchParams():" +
-                    "\nticketSearchParamsId: ${result[0]}")
-        }
-
-        return result[0]
-    }
-
-    private suspend fun getSelectedSettingsId(): Int {
-        val result = mutableListOf(0)
-
-        withContext(Dispatchers.IO) {
-            result[0] = TicketRepository.database.settingsDao.getSelectedSettingsId()
-        }
-
-        Timber.e("TicketCacheFetcher: getSelectedSettingsId():" +
-                "\nresult : ${result[0]}")
-
-        return result[0]
-    }
-
-    private fun getTimestampValid(): Long {
-        val calendar = Calendar.getInstance()
-        calendar.time = Date()
-        calendar.add(Calendar.DATE, 1)
-        return calendar.timeInMillis
-    }
-
-    private suspend fun getMarketPlaceId(name: String): Int {
-        Timber.e("1_TicketCacheFetcher: getMarketPlaceId():" +
-                "\nname: $name")
-
-        val result = mutableListOf(0)
-
-        withContext(Dispatchers.IO) {
-            result[0] = TicketRepository.database.marketPlaceDao.getMarketPlaceIdByName(name)
-        }
-
-        Timber.e("2_TicketCacheFetcher: getMarketPlaceId():" +
-                "\nmarketPlaceIdByName: ${result[0]}")
-
-        return result[0]
+        return tickets
     }
 }

@@ -8,7 +8,6 @@ import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 interface TicketContract {
-    suspend fun init()
     suspend fun fetchTicket(placeFrom: String, placeTo: String, departureDate: String):
             List<TicketDomainModel>
 }

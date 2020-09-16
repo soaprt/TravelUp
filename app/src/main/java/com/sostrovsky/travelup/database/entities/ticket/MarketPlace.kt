@@ -20,4 +20,8 @@ data class MarketPlace constructor(
 
     @ColumnInfo
     val name: String
-)
+) {
+    override fun toString(): String {
+        return "MarketPlace(id=$id, code='$code', name='$name')"
+    }
+}

@@ -1,6 +1,7 @@
 package com.sostrovsky.travelup.database.dao.ticket
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.sostrovsky.travelup.database.entities.ticket.Carrier
 
@@ -17,4 +18,10 @@ interface CarrierDao {
 
     @Query("SELECT name FROM carrier WHERE id=:id")
     fun getNameById(id: Int): String
+
+    @Query("SELECT id FROM carrier WHERE name=:name")
+    fun getIdByName(name: String): Int
+
+    @Insert
+    fun insert(carrier: Carrier): Long
 }

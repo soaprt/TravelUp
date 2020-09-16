@@ -10,12 +10,12 @@ import androidx.room.PrimaryKey
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 @Entity
-data class Carrier (
+data class Carrier(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
 
     @ColumnInfo
-    val code: String,
+    val code: Int,
 
     @ColumnInfo
     val name: String

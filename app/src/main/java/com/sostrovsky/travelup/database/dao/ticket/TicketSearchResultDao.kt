@@ -18,7 +18,7 @@ interface TicketSearchResultDao {
             List<TicketSearchResult>
 
     @Insert
-    fun insertAll(vararg result: TicketSearchResult)
+    fun insertAll(result: List<TicketSearchResult>): List<Long>
 
     @Delete
     fun delete(result: TicketSearchResult)

@@ -2,9 +2,11 @@ package com.sostrovsky.travelup.network.dto.ticket
 
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.network.dto.settings.CurrencyFromJSON
+import com.sostrovsky.travelup.repository.ticket.carrier.CarrierRepository
 import com.sostrovsky.travelup.util.isoTimeToLocalTime
 import com.sostrovsky.travelup.util.isoDateToLocalDate
 import com.squareup.moshi.JsonClass
+import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -13,7 +15,7 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class TicketsResponse(
-    val Quotes: List<QuoteFromJSON>, val Places: List<TicketPlaceFromJSON>,
+    val Quotes: List<QuoteFromJSON>, val Places: List<MarketPlaceFromJSON>,
     val Carriers: List<CarrierFromJSON>, val Currencies: List<CurrencyFromJSON>
 )
 
@@ -31,7 +33,7 @@ data class BoundLegFromJSON(
 )
 
 @JsonClass(generateAdapter = true)
-data class TicketPlaceFromJSON(
+data class MarketPlaceFromJSON(
     val PlaceId: Int, val IataCode: String?, val Name: String,
     val Type: String, val SkyscannerCode: String, val CityName: String?,
     val CityId: String?, val CountryName: String?
@@ -43,10 +45,18 @@ data class CarrierFromJSON(val CarrierId: Int, val Name: String)
 /**
  * Convert Network results to domain objects
  */
-fun TicketsResponse.asDomainModel(): List<TicketDomainModel> {
+suspend fun TicketsResponse.asDomainModel(): List<TicketDomainModel> {
     val tickets = mutableListOf<TicketDomainModel>()
 
     Quotes.forEach {
+        Carriers.forEach {
+            val insertedRowId = CarrierRepository.addCarrierToDB(it.CarrierId, it.Name)
+            Timber.e(
+                "TicketsResponse: TicketsResponse.asDomainModel():" +
+                        "\ninsertedRowId: $insertedRowId"
+            )
+        }
+
         tickets.add(
             TicketDomainModel(
                 departureDate = isoDateToLocalDate(it.OutboundLeg.DepartureDate),
@@ -54,7 +64,7 @@ fun TicketsResponse.asDomainModel(): List<TicketDomainModel> {
                 departureFrom = placeIdToPlaceName(Places, it.OutboundLeg.OriginId),
                 departureTo = placeIdToPlaceName(Places, it.OutboundLeg.DestinationId),
                 carrierName = carrierIdToCarrierName(Carriers, it.OutboundLeg.CarrierIds[0]),
-                _flightPrice = it.MinPrice.toLong(),
+                _flightPriceAsLong = it.MinPrice.toLong(),
                 flightPriceCurrency = Currencies[0].Code
             )
         )
@@ -63,7 +73,7 @@ fun TicketsResponse.asDomainModel(): List<TicketDomainModel> {
     return tickets
 }
 
-fun placeIdToPlaceName(places: List<TicketPlaceFromJSON>, placeId: Int): String {
+fun placeIdToPlaceName(places: List<MarketPlaceFromJSON>, placeId: Int): String {
     var result = ""
 
     places.forEach {
