@@ -4,7 +4,7 @@ import com.sostrovsky.travelup.BuildConfig
 import com.sostrovsky.travelup.database.entities.settings.Language
 import com.sostrovsky.travelup.network.WebService
 import com.sostrovsky.travelup.network.dto.settings.LocaleFromJSON
-import com.sostrovsky.travelup.repository.settings.RowsGenerator
+import com.sostrovsky.travelup.repository.settings.DataGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -14,11 +14,11 @@ import java.util.*
  * Date: 23.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object LanguageGeneratorOnline : RowsGenerator<List<Language>>() {
-    override suspend fun execute(): List<Language> {
+object LanguageGeneratorOnline : DataGenerator<List<Language>> {
+    override suspend fun generate(): List<Language> {
         return fetchLocales().map {
             Language(
-                id = generateRowId(),
+                id = 0,
                 name = generateName(it),
                 code = it.Code
             )

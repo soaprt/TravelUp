@@ -20,10 +20,10 @@ interface LanguageDao {
     fun getAll(): List<Language>
 
     @Query("SELECT code FROM language WHERE id=:id")
-    fun getCodeById(id: Long): String
+    fun getCodeById(id: Int): String
 
     @Query("SELECT id FROM language WHERE code=:code")
-    fun getIdByCode(code: String): Long
+    fun getIdByCode(code: String): Int
 
     @Query("SELECT COUNT(*) FROM language")
     fun getRowsCount(): Long

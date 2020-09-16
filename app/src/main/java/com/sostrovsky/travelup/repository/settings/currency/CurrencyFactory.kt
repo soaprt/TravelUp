@@ -1,8 +1,8 @@
 package com.sostrovsky.travelup.repository.settings.currency
 
 import com.sostrovsky.travelup.database.entities.settings.Currency
+import com.sostrovsky.travelup.repository.settings.DataGenerator
 import com.sostrovsky.travelup.util.network.NetworkHelper
-import com.sostrovsky.travelup.repository.settings.RowsGenerator
 import timber.log.Timber
 
 /**
@@ -13,12 +13,12 @@ import timber.log.Timber
 object CurrencyFactory {
     suspend fun generate(): List<Currency> {
         Timber.e("CurrencyFactory: generate(): no data in db")
-        val currencyGenerator: RowsGenerator<List<Currency>> =
+        val dataGenerator: DataGenerator<List<Currency>> =
             if (NetworkHelper.isAvailable) {
                 CurrencyGeneratorOnline
             } else {
                 CurrencyGeneratorOffline
             }
-        return (currencyGenerator.execute()).sortedBy { it.code }
+        return (dataGenerator.generate()).sortedBy { it.code }
     }
 }

@@ -4,7 +4,7 @@ import com.sostrovsky.travelup.BuildConfig
 import com.sostrovsky.travelup.database.entities.settings.Currency
 import com.sostrovsky.travelup.network.WebService
 import com.sostrovsky.travelup.network.dto.settings.CurrencyFromJSON
-import com.sostrovsky.travelup.repository.settings.RowsGenerator
+import com.sostrovsky.travelup.repository.settings.DataGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -14,11 +14,11 @@ import java.util.*
  * Date: 23.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object CurrencyGeneratorOnline : RowsGenerator<List<Currency>>() {
-    override suspend fun execute(): List<Currency> {
+object CurrencyGeneratorOnline : DataGenerator<List<Currency>> {
+    override suspend fun generate(): List<Currency> {
         return fetchCurrencies().map {
             Currency(
-                id = generateRowId(),
+                id = 0,
                 code = it.Code,
                 name = generateName(it)
             )

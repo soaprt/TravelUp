@@ -1,7 +1,7 @@
 package com.sostrovsky.travelup.repository.settings.language
 
 import com.sostrovsky.travelup.database.entities.settings.Language
-import com.sostrovsky.travelup.repository.settings.RowsGenerator
+import com.sostrovsky.travelup.repository.settings.DataGenerator
 import com.sostrovsky.travelup.util.getFormattedLocale
 import java.util.*
 
@@ -10,11 +10,11 @@ import java.util.*
  * Date: 23.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object LanguageGeneratorOffline : RowsGenerator<List<Language>>() {
-    override suspend fun execute(): List<Language> {
+object LanguageGeneratorOffline : DataGenerator<List<Language>> {
+    override suspend fun generate(): List<Language> {
         return fetchLocales().map {
             Language(
-                id = generateRowId(),
+                id = 0,
                 name = generateName(it),
                 code = getFormattedLocale(it)
             )

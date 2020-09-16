@@ -1,8 +1,7 @@
 package com.sostrovsky.travelup.repository.settings.currency
 
 import com.sostrovsky.travelup.database.entities.settings.Currency
-import com.sostrovsky.travelup.repository.settings.RowsGenerator
-import com.sostrovsky.travelup.util.getCurrencyCodeFromLocale
+import com.sostrovsky.travelup.repository.settings.DataGenerator
 import com.sostrovsky.travelup.util.getCurrencyFromLocale
 import java.util.*
 import java.util.Currency as SystemCurrency
@@ -13,12 +12,12 @@ import java.util.Currency as SystemCurrency
  * Date: 23.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object CurrencyGeneratorOffline : RowsGenerator<List<Currency>>() {
-    override suspend fun execute(): List<Currency> {
+object CurrencyGeneratorOffline : DataGenerator<List<Currency>> {
+    override suspend fun generate(): List<Currency> {
         return fetchCurrencies().map {
             Currency(
-                id = generateRowId(),
-                code = getCurrencyCodeFromLocale(),
+                id = 0,
+                code = it!!.currencyCode,
                 name = generateName(it!!)
             )
         }

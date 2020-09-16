@@ -11,9 +11,9 @@ import com.sostrovsky.travelup.domain.settings.CountryDomain
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 @Entity
-class Country (
-    @PrimaryKey(autoGenerate = false)
-    val id: Long = 0L,
+data class Country(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
 
     @ColumnInfo
     val code: String,

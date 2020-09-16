@@ -14,13 +14,13 @@ import com.sostrovsky.travelup.database.entities.settings.Settings
 @Dao
 interface SettingsDao {
     @Query("SELECT COUNT(*) FROM settings")
-    fun checkIfEmpty(): Long
+    fun checkIfEmpty(): Int
 
     @Query("SELECT COUNT(*) FROM settings WHERE id=:settingsId AND is_selected=1")
-    fun checkIfSelected(settingsId: Long): Long
+    fun checkIfSelected(settingsId: Int): Int
 
     @Query("SELECT id FROM settings WHERE language_id=:languageId AND currency_id=:currencyId AND country_id=:countryId")
-    fun getId(languageId: Long, currencyId: Long, countryId: Long): Long
+    fun getId(languageId: Int, currencyId: Int, countryId: Int): Int
 
     @Query("SELECT * FROM settings WHERE is_selected=1")
     fun getSelected(): Settings
@@ -35,7 +35,7 @@ interface SettingsDao {
     fun unSelectAll()
 
     @Query("UPDATE settings SET is_selected=1 WHERE id=:settingsId")
-    fun selectOne(settingsId: Long)
+    fun selectOne(settingsId: Int)
 
     @Transaction
     fun insertAndSetSelected(settings: Settings): Long {
@@ -46,7 +46,7 @@ interface SettingsDao {
     }
 
     @Transaction
-    fun setSelected(settingsId: Long) {
+    fun setSelected(settingsId: Int) {
         unSelectAll()
         selectOne(settingsId)
     }

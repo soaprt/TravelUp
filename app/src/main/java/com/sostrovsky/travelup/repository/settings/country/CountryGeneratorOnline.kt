@@ -4,7 +4,7 @@ import com.sostrovsky.travelup.BuildConfig
 import com.sostrovsky.travelup.database.entities.settings.Country
 import com.sostrovsky.travelup.network.WebService
 import com.sostrovsky.travelup.network.dto.settings.CountryFromJSON
-import com.sostrovsky.travelup.repository.settings.RowsGenerator
+import com.sostrovsky.travelup.repository.settings.DataGenerator
 import com.sostrovsky.travelup.util.getFormattedLocale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,11 +15,12 @@ import java.util.*
  * Date: 23.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object CountryGeneratorOnline : RowsGenerator<List<Country>>() {
-    override suspend fun execute(): List<Country> {
+object CountryGeneratorOnline :
+    DataGenerator<List<Country>> {
+    override suspend fun generate(): List<Country> {
         return fetchCountries().map {
             Country(
-                id = generateRowId(),
+                id = 0,
                 code = it.Code.toLowerCase(),
                 name = it.Name.capitalize()
             )

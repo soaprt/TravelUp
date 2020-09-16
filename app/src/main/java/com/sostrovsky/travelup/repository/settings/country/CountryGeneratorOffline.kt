@@ -1,7 +1,7 @@
 package com.sostrovsky.travelup.repository.settings.country
 
 import com.sostrovsky.travelup.database.entities.settings.Country
-import com.sostrovsky.travelup.repository.settings.RowsGenerator
+import com.sostrovsky.travelup.repository.settings.DataGenerator
 import com.sostrovsky.travelup.util.getCountryCodeFromLocale
 import com.sostrovsky.travelup.util.getCountryNameFromLocale
 import java.util.*
@@ -11,11 +11,12 @@ import java.util.*
  * Date: 23.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object CountryGeneratorOffline : RowsGenerator<List<Country>>() {
-    override suspend fun execute(): List<Country> {
+object CountryGeneratorOffline :
+    DataGenerator<List<Country>> {
+    override suspend fun generate(): List<Country> {
         return fetchLocales().map {
             Country(
-                id = generateRowId(),
+                id = 0,
                 code = getCountryCodeFromLocale(it),
                 name = getCountryNameFromLocale(it)
             )

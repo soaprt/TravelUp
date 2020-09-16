@@ -20,10 +20,10 @@ interface CurrencyDao {
     fun getAll(): List<Currency>
 
     @Query("SELECT code FROM currency WHERE id=:id")
-    fun getCodeById(id: Long): String
+    fun getCodeById(id: Int): String
 
     @Query("SELECT id FROM currency WHERE code=:code")
-    fun getIdByCode(code: String): Long
+    fun getIdByCode(code: String): Int
 
     @Query("SELECT COUNT(*) FROM currency")
     fun getRowsCount(): Long

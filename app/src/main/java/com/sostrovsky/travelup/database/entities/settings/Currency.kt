@@ -12,9 +12,9 @@ import com.sostrovsky.travelup.domain.settings.CurrencyDomain
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 @Entity
-class Currency (
-    @PrimaryKey(autoGenerate = false)
-    val id: Long = 0L,
+data class Currency(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
 
     @ColumnInfo
     val code: String,

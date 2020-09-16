@@ -10,18 +10,18 @@ import androidx.room.PrimaryKey
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 @Entity
-class Settings(
-    @PrimaryKey(autoGenerate = false)
-    var id: Long = 0L,
+data class Settings(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
 
     @ColumnInfo(name = "language_id")
-    val languageId: Long,
+    val languageId: Int,
 
     @ColumnInfo(name = "currency_id")
-    val currencyId: Long,
+    val currencyId: Int,
 
     @ColumnInfo(name = "country_id")
-    val countryId: Long,
+    val countryId: Int,
 
     @ColumnInfo(name = "is_selected")
     val isSelected: Boolean = false

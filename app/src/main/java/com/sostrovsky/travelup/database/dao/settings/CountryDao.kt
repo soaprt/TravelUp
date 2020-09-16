@@ -20,10 +20,10 @@ interface CountryDao {
     fun getAll(): List<Country>
 
     @Query("SELECT code FROM country WHERE id=:id")
-    fun getCodeById(id: Long): String
+    fun getCodeById(id: Int): String
 
     @Query("SELECT id FROM country WHERE code=:code")
-    fun getIdByCode(code: String): Long
+    fun getIdByCode(code: String): Int
 
     @Query("SELECT COUNT(*) FROM country")
     fun getRowsCount(): Long

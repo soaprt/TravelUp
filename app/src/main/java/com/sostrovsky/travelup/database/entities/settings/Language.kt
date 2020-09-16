@@ -11,9 +11,9 @@ import com.sostrovsky.travelup.domain.settings.LanguageDomain
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 @Entity
-class Language (
-    @PrimaryKey(autoGenerate = false)
-    val id: Long = 0L,
+data class Language(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
 
     @ColumnInfo
     val code: String,

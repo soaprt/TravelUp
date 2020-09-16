@@ -1,8 +1,8 @@
 package com.sostrovsky.travelup.repository.settings.language
 
 import com.sostrovsky.travelup.database.entities.settings.Language
+import com.sostrovsky.travelup.repository.settings.DataGenerator
 import com.sostrovsky.travelup.util.network.NetworkHelper
-import com.sostrovsky.travelup.repository.settings.RowsGenerator
 import timber.log.Timber
 
 /**
@@ -13,12 +13,12 @@ import timber.log.Timber
 object LanguageFactory {
     suspend fun generate(): List<Language> {
         Timber.e("LanguageFactory: generate(): no data in db")
-        val languageGenerator: RowsGenerator<List<Language>> =
+        val dataGenerator: DataGenerator<List<Language>> =
             if (NetworkHelper.isAvailable) {
                 LanguageGeneratorOnline
             } else {
                 LanguageGeneratorOffline
             }
-        return (languageGenerator.execute()).sortedBy { it.code }
+        return (dataGenerator.generate()).sortedBy { it.code }
     }
 }
