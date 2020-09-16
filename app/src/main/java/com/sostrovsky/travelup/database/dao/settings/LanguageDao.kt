@@ -26,7 +26,7 @@ interface LanguageDao {
     fun getIdByCode(code: String): Int
 
     @Query("SELECT COUNT(*) FROM language")
-    fun getRowsCount(): Long
+    fun getRowsCount(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(languages: List<Language>)

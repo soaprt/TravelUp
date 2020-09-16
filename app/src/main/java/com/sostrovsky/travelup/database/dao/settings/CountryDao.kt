@@ -26,7 +26,7 @@ interface CountryDao {
     fun getIdByCode(code: String): Int
 
     @Query("SELECT COUNT(*) FROM country")
-    fun getRowsCount(): Long
+    fun getRowsCount(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(countries: List<Country>)

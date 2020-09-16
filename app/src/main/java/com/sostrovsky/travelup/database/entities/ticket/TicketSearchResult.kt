@@ -15,13 +15,13 @@ data class TicketSearchResult (
     val id: Int,
 
     @ColumnInfo(name = "settings_id")
-    val settingsId: Long,
+    val settingsId: Int,
 
     @ColumnInfo(name = "ticket_search_params_id")
-    val ticketSearchParamsId: Long,
+    val ticketSearchParamsId: Int,
 
     @ColumnInfo(name = "carrier_id")
-    val carrierId: Long,
+    val carrierId: Int,
 
     @ColumnInfo(name = "departure_time")
     val departureTime: String,

@@ -12,9 +12,9 @@ import com.sostrovsky.travelup.database.entities.ticket.TicketSearchParams
 @Dao
 interface TicketSearchParamsDao {
     @Query("SELECT * FROM ticket_search_params WHERE id=:id")
-    fun getById(id: Long): TicketSearchParams
+    fun getById(id: Int): TicketSearchParams
 
     @Query("SELECT Id FROM ticket_search_params WHERE market_place_id_from=:marketPlaceIdFrom AND market_place_id_to=:marketPlaceIdTo AND departure_date=:departureDate")
-    fun getId(marketPlaceIdFrom: Long, marketPlaceIdTo: Long,
-              departureDate: String): Long
+    fun getId(marketPlaceIdFrom: Int, marketPlaceIdTo: Int,
+              departureDate: String): Int
 }

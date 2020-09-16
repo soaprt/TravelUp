@@ -14,7 +14,7 @@ import com.sostrovsky.travelup.database.entities.ticket.TicketSearchResult
 @Dao
 interface TicketSearchResultDao {
     @Query("SELECT * FROM ticket_search_result WHERE settings_id=:settingsId AND ticket_search_params_id=:ticketSearchParamsId AND timestamp<=:timestampValid")
-    fun getTickets(settingsId: Long, ticketSearchParamsId: Long, timestampValid: Long):
+    fun getTickets(settingsId: Int, ticketSearchParamsId: Int, timestampValid: Long):
             List<TicketSearchResult>
 
     @Insert

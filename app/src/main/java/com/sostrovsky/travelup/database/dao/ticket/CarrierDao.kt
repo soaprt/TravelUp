@@ -13,8 +13,8 @@ import com.sostrovsky.travelup.database.entities.ticket.Carrier
 @Dao
 interface CarrierDao {
     @Query("SELECT * FROM carrier WHERE id=:id")
-    fun getById(id: Long): Carrier
+    fun getById(id: Int): Carrier
 
     @Query("SELECT name FROM carrier WHERE id=:id")
-    fun getNameById(id: Long): String
+    fun getNameById(id: Int): String
 }

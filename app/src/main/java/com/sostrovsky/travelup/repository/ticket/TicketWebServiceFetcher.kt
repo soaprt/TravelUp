@@ -101,7 +101,7 @@ object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDoma
         )
 
         if (response?.Places?.isNotEmpty() == true) {
-            result = response.asDatabaseModel()[0].placeCode
+            result = response.asDatabaseModel()[0].code
         }
 
         return result

@@ -10,15 +10,15 @@ import androidx.room.PrimaryKey
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 @Entity(tableName = "ticket_search_params")
-class TicketSearchParams constructor(
-    @PrimaryKey(autoGenerate = false)
-    val id: Long = 0L,
+class TicketSearchParams (
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
 
     @ColumnInfo(name = "market_place_id_from")
-    val marketPlaceIdFrom: Long,
+    val marketPlaceIdFrom: Int,
 
     @ColumnInfo(name = "market_place_id_to")
-    val marketPlaceIdTo: Long,
+    val marketPlaceIdTo: Int,
 
     @ColumnInfo(name = "departure_date")
     val departureDate: String

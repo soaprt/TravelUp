@@ -11,9 +11,9 @@ import androidx.room.PrimaryKey
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 @Entity(tableName = "market_place")
-class MarketPlace constructor(
-    @PrimaryKey(autoGenerate = false)
-    val id: Long = 0L,
+data class MarketPlace constructor(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
 
     @ColumnInfo
     val code: String,

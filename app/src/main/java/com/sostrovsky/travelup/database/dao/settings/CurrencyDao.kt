@@ -26,7 +26,7 @@ interface CurrencyDao {
     fun getIdByCode(code: String): Int
 
     @Query("SELECT COUNT(*) FROM currency")
-    fun getRowsCount(): Long
+    fun getRowsCount(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(currencies: List<Currency>)

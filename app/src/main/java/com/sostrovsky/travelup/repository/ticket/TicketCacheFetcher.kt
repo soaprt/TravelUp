@@ -45,7 +45,7 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
             var canContinue = true
 
             val settingsId = getSelectedSettingsId()
-            var ticketSearchParamsId = 0L
+            var ticketSearchParamsId = 0
             val timestampValid = getTimestampValid()
 
             Timber.e("2_TicketCacheFetcher: fetchTickets():" +
@@ -66,7 +66,7 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
                 Timber.e("3_1_TicketCacheFetcher: fetchTickets():" +
                         "\nticketSearchParamsId: $ticketSearchParamsId")
 
-                if (ticketSearchParamsId <= 0L) {
+                if (ticketSearchParamsId <= 0) {
                     canContinue = false
                 }
             }
@@ -93,16 +93,16 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
     private suspend fun getTicketSearchParams(
         placeFrom: String, placeTo: String,
         departureDate: String
-    ): Long {
+    ): Int {
         Timber.e("1_TicketCacheFetcher: getTicketSearchParams():" +
                 "\nplaceFrom: $placeFrom" +
                 "\nplaceTo: $placeTo" +
                 "\ndepartureDate: $departureDate ")
 
-        val result = mutableListOf(0L)
+        val result = mutableListOf(0)
 
         withContext(Dispatchers.IO) {
-            val isMarketPlaceDBEmpty = TicketRepository.database.marketPlaceDao.checkIfEmpty() == 0L
+            val isMarketPlaceDBEmpty = TicketRepository.database.marketPlaceDao.checkIfEmpty() == 0
             Timber.e("2_TicketCacheFetcher: getTicketSearchParams():" +
                     "\nmarketPlace is empty: $isMarketPlaceDBEmpty")
 
@@ -110,7 +110,7 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
                 var canContinue = true
 
                 val marketPlaceIdFrom = getMarketPlaceId(placeFrom)
-                var marketPlaceIdTo = 0L
+                var marketPlaceIdTo = 0
 
                 Timber.e("2_1_TicketCacheFetcher: getTicketSearchParams():" +
                         "\nmarketPlaceIdFrom: $marketPlaceIdFrom")
@@ -150,8 +150,8 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
         return result[0]
     }
 
-    private suspend fun getSelectedSettingsId(): Long {
-        val result = mutableListOf(0L)
+    private suspend fun getSelectedSettingsId(): Int {
+        val result = mutableListOf(0)
 
         withContext(Dispatchers.IO) {
             result[0] = TicketRepository.database.settingsDao.getSelectedSettingsId()
@@ -170,11 +170,11 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
         return calendar.timeInMillis
     }
 
-    private suspend fun getMarketPlaceId(name: String): Long {
+    private suspend fun getMarketPlaceId(name: String): Int {
         Timber.e("1_TicketCacheFetcher: getMarketPlaceId():" +
                 "\nname: $name")
 
-        val result = mutableListOf(0L)
+        val result = mutableListOf(0)
 
         withContext(Dispatchers.IO) {
             result[0] = TicketRepository.database.marketPlaceDao.getMarketPlaceIdByName(name)

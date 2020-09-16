@@ -12,11 +12,11 @@ import com.sostrovsky.travelup.database.entities.ticket.MarketPlace
 @Dao
 interface MarketPlaceDao {
     @Query("SELECT COUNT(*) FROM market_place")
-    fun checkIfEmpty(): Long
+    fun checkIfEmpty(): Int
 
     @Query("SELECT * FROM market_place WHERE id=:id")
-    fun getMarketPlaceById(id: Long): MarketPlace
+    fun getMarketPlaceById(id: Int): MarketPlace
 
     @Query("SELECT id FROM market_place WHERE name=:name")
-    fun getMarketPlaceIdByName(name: String): Long
+    fun getMarketPlaceIdByName(name: String): Int
 }
