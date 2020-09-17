@@ -1,6 +1,6 @@
 package com.sostrovsky.travelup.network.dto.ticket
 
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
 import com.sostrovsky.travelup.network.dto.settings.CurrencyFromJSON
 import com.sostrovsky.travelup.repository.ticket.carrier.CarrierRepository
 import com.sostrovsky.travelup.util.isoTimeToLocalTime
@@ -44,8 +44,8 @@ data class CarrierFromJSON(val CarrierId: Int, val Name: String)
 /**
  * Convert Network results to domain objects
  */
-suspend fun TicketsResponse.asDomainModel(): List<TicketDomainModel> {
-    val tickets = mutableListOf<TicketDomainModel>()
+suspend fun TicketsResponse.asDomainModel(): List<TicketDomain> {
+    val tickets = mutableListOf<TicketDomain>()
 
     Quotes.forEach {
         Carriers.forEach { carrier ->
@@ -53,7 +53,7 @@ suspend fun TicketsResponse.asDomainModel(): List<TicketDomainModel> {
         }
 
         tickets.add(
-            TicketDomainModel(
+            TicketDomain(
                 departureDate = isoDateToLocalDate(it.OutboundLeg.DepartureDate),
                 departureTime = isoTimeToLocalTime(it.QuoteDateTime),
                 departureFrom = placeIdToPlaceName(Places, it.OutboundLeg.OriginId),

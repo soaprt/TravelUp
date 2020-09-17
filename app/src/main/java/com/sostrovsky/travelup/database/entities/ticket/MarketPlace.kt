@@ -3,6 +3,7 @@ package com.sostrovsky.travelup.database.entities.ticket
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.sostrovsky.travelup.domain.ticket.MarketPlaceDomain
 
 
 /**
@@ -23,5 +24,14 @@ data class MarketPlace constructor(
 ) {
     override fun toString(): String {
         return "MarketPlace(id=$id, code='$code', name='$name')"
+    }
+}
+
+fun List<MarketPlace>.asDomain(): List<MarketPlaceDomain> {
+    return map {
+        MarketPlaceDomain(
+            code = it.code,
+            name = it.name
+        )
     }
 }

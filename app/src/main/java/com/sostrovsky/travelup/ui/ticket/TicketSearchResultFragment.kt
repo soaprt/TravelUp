@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.databinding.FragmentTicketSearchResultBinding
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
 import com.sostrovsky.travelup.ui.MenuFragment
 import kotlinx.android.synthetic.main.fragment_ticket_search_result.*
 
@@ -29,11 +29,11 @@ class TicketSearchResultFragment : MenuFragment(R.layout.fragment_ticket_search_
             })
     }
 
-    private fun setRecyclerView(tickets: List<TicketDomainModel>) {
+    private fun setRecyclerView(tickets: List<TicketDomain>) {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
 
-        val adapter = TicketListAdapter(tickets as ArrayList<TicketDomainModel>)
+        val adapter = TicketListAdapter(tickets as ArrayList<TicketDomain>)
         recyclerView.adapter = adapter
         adapter.notifyItemInserted(tickets.size - 1)
     }

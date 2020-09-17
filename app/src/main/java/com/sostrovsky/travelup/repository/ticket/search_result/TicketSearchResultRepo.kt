@@ -3,8 +3,8 @@ package com.sostrovsky.travelup.repository.ticket.search_result
 import com.sostrovsky.travelup.TravelUpApp
 import com.sostrovsky.travelup.database.TravelUpDatabase
 import com.sostrovsky.travelup.database.entities.ticket.TicketSearchResult
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
-import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
+import com.sostrovsky.travelup.domain.ticket.TicketSearchParamsDomain
 import com.sostrovsky.travelup.repository.settings.SettingsRepository
 import com.sostrovsky.travelup.repository.settings.SettingsRepository.fetchSettingsIdFromDB
 import com.sostrovsky.travelup.repository.settings.SettingsRepository.generateSettingsDomain
@@ -24,7 +24,7 @@ import java.util.*
 object TicketSearchResultRepo {
     val database = TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
 
-    suspend fun fetchTickets(params: TicketSearchParams): List<TicketSearchResult> {
+    suspend fun fetchTickets(params: TicketSearchParamsDomain): List<TicketSearchResult> {
         val result = mutableListOf<TicketSearchResult>()
 
         withContext(Dispatchers.IO) {
@@ -67,7 +67,7 @@ object TicketSearchResultRepo {
         return calendar.timeInMillis
     }
 
-    suspend fun saveTickets(params: TicketSearchParams, tickets: List<TicketDomainModel>): Int {
+    suspend fun saveTickets(params: TicketSearchParamsDomain, tickets: List<TicketDomain>): Int {
         var savedRowsAmount = 0
 
         withContext(Dispatchers.IO) {

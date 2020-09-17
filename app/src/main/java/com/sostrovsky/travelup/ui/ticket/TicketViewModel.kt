@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.TravelUpApp
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
+import com.sostrovsky.travelup.domain.ticket.MarketPlaceDomain
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
 import com.sostrovsky.travelup.repository.ticket.TicketRepository.fetchTicket
+import com.sostrovsky.travelup.repository.ticket.market_place.MarketPlaceRepository
 import com.sostrovsky.travelup.util.calendarDateToLocalDate
 import com.sostrovsky.travelup.util.isNotPastDate
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.*
 
 /**
@@ -41,18 +40,19 @@ class TicketViewModel : ViewModel() {
     private val departureDate = MutableLiveData<String>()
     private var departureDateComplete = false
 
-    private val searchButtonVisible = MutableLiveData<Boolean>()
-//    val searchButtonVisible: LiveData<Boolean>
-//        get() = _searchButtonVisible
+    private val marketPlaces = MutableLiveData<List<MarketPlaceDomain>>()
+    private var needToLoadMarketPlaces = true
 
-    private val ticketSearchResult = MutableLiveData<Triple<List<TicketDomainModel>, NavDirections,
+    private val searchButtonVisible = MutableLiveData<Boolean>()
+
+    private val ticketSearchResult = MutableLiveData<Triple<List<TicketDomain>, NavDirections,
             String>>()
 
-    fun fetchPlaceFrom() : String {
+    fun fetchPlaceFrom(): String {
         return placeFrom
     }
 
-    fun fetchPlaceTo() : String {
+    fun fetchPlaceTo(): String {
         return placeTo
     }
 
@@ -60,11 +60,27 @@ class TicketViewModel : ViewModel() {
         return departureDate
     }
 
-    fun fetchSearchButtonVisible() : LiveData<Boolean> {
+    fun fetchMarketPlaces(): LiveData<List<MarketPlaceDomain>> {
+        if (needToLoadMarketPlaces) {
+            viewModelScope.launch {
+                marketPlaces.value = MarketPlaceRepository.fetchAll()
+                needToLoadMarketPlaces = false
+            }
+        }
+        return marketPlaces
+    }
+
+    private fun reloadMarketPlaces() {
+        marketPlaces.value = emptyList()
+        needToLoadMarketPlaces = true
+        fetchMarketPlaces()
+    }
+
+    fun fetchSearchButtonVisible(): LiveData<Boolean> {
         return searchButtonVisible
     }
 
-    fun fetchTicketSearchResult(): LiveData<Triple<List<TicketDomainModel>, NavDirections, String>> {
+    fun fetchTicketSearchResult(): LiveData<Triple<List<TicketDomain>, NavDirections, String>> {
         return ticketSearchResult
     }
 
@@ -140,6 +156,7 @@ class TicketViewModel : ViewModel() {
             )
 
             enableSearchButton()
+            reloadMarketPlaces()
         }
     }
 

@@ -1,8 +1,8 @@
 package com.sostrovsky.travelup.repository.ticket
 
 import com.sostrovsky.travelup.BuildConfig
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
-import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
+import com.sostrovsky.travelup.domain.ticket.TicketSearchParamsDomain
 import com.sostrovsky.travelup.network.WebService
 import com.sostrovsky.travelup.network.dto.ticket.TicketsResponse
 import com.sostrovsky.travelup.network.dto.ticket.asDomainModel
@@ -16,9 +16,9 @@ import com.sostrovsky.travelup.util.network.safeApiCall
  * Date: 26.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDomainModel>> {
-    override suspend fun fetch(params: TicketSearchParams): List<TicketDomainModel> {
-        val tickets = mutableListOf<TicketDomainModel>()
+object TicketWebServiceFetcher : DataFetcher<TicketSearchParamsDomain, List<TicketDomain>> {
+    override suspend fun fetch(params: TicketSearchParamsDomain): List<TicketDomain> {
+        val tickets = mutableListOf<TicketDomain>()
 
         val debug = false
 
@@ -68,7 +68,7 @@ object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDoma
 
     private suspend fun fetchFromWebService(
         originPlace: String, destinationPlace: String,
-        params: TicketSearchParams
+        params: TicketSearchParamsDomain
     ): TicketsResponse? {
         return safeApiCall(
             call = {

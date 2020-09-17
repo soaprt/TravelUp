@@ -2,8 +2,8 @@ package com.sostrovsky.travelup.repository.ticket
 
 import com.sostrovsky.travelup.TravelUpApp
 import com.sostrovsky.travelup.database.TravelUpDatabase
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
-import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
+import com.sostrovsky.travelup.domain.ticket.TicketSearchParamsDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -16,8 +16,8 @@ object TicketRepository : TicketContract {
     val database = TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
 
     override suspend fun fetchTicket(placeFrom: String, placeTo: String, departureDate: String):
-            List<TicketDomainModel> {
-        val result = mutableListOf<TicketDomainModel>()
+            List<TicketDomain> {
+        val result = mutableListOf<TicketDomain>()
 
         withContext(Dispatchers.IO) {
             val params = generateTicketSearchParams(placeFrom, placeTo, departureDate)
@@ -33,8 +33,8 @@ object TicketRepository : TicketContract {
     private suspend fun generateTicketSearchParams(
         placeFrom: String, placeTo: String,
         departureDate: String
-    ): TicketSearchParams? {
-        var result: TicketSearchParams? = null
+    ): TicketSearchParamsDomain? {
+        var result: TicketSearchParamsDomain? = null
 
         withContext(Dispatchers.IO) {
             val settings = database.settingsDao.getSelected()
@@ -42,7 +42,7 @@ object TicketRepository : TicketContract {
             val currencyCode = database.currencyDao.getCodeById(settings.currencyId)
             val localeCode = database.languageDao.getCodeById(settings.languageId)
 
-            result = TicketSearchParams(
+            result = TicketSearchParamsDomain(
                 placeFrom = placeFrom, placeTo = placeTo,
                 departureDate = departureDate,
                 countryCode = countryCode,

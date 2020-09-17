@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.databinding.FragmentTicketSearchBinding
 import com.sostrovsky.travelup.ui.MenuFragment
 import kotlinx.android.synthetic.main.fragment_ticket_search.*
 import java.util.*
-import androidx.lifecycle.Observer
 
 /**
  * Fragment for searching tickets.
@@ -19,6 +19,8 @@ import androidx.lifecycle.Observer
 class TicketSearchFragment : MenuFragment(R.layout.fragment_ticket_search) {
     private lateinit var mBinding: FragmentTicketSearchBinding
     private lateinit var viewModel: TicketViewModel
+
+    lateinit var marketPlaceAdapter: MarketPlaceAutoCompleteAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,24 +30,30 @@ class TicketSearchFragment : MenuFragment(R.layout.fragment_ticket_search) {
         mBinding.setLifecycleOwner(this)
         mBinding.searchViewModel = viewModel
 
-//        viewModel.userSettings.observe(viewLifecycleOwner, androidx.lifecycle.Observer { data ->
-//            viewModel.placeSearchParams.userSettings = data
-//            viewModel.ticketSearchParams.userSettings = data
-//        })
-
         setViewItems()
     }
 
     private fun setViewItems() {
+        setMarketPlaceAdapter()
         setPlaceFrom()
         setPlaceTo()
         setDepartureDate()
         setSearchButton()
     }
 
+    private fun setMarketPlaceAdapter() {
+        marketPlaceAdapter = MarketPlaceAutoCompleteAdapter(requireContext(), mutableListOf())
+        viewModel.fetchMarketPlaces().observe(viewLifecycleOwner, Observer { data ->
+            marketPlaceAdapter.marketPlaces.clear()
+            marketPlaceAdapter.marketPlaces.addAll(data)
+            marketPlaceAdapter.notifyDataSetChanged()
+        })
+    }
+
     private fun setPlaceFrom() {
         edtPlaceFrom.apply {
             setText(viewModel.fetchPlaceFrom())
+            setAdapter(marketPlaceAdapter)
             addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(text: Editable) {}
                 override fun beforeTextChanged(
@@ -66,6 +74,7 @@ class TicketSearchFragment : MenuFragment(R.layout.fragment_ticket_search) {
     private fun setPlaceTo() {
         edtPlaceTo.apply {
             setText(viewModel.fetchPlaceTo())
+            setAdapter(marketPlaceAdapter)
             addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(text: Editable?) {}
                 override fun beforeTextChanged(

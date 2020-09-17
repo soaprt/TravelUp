@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sostrovsky.travelup.R
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
 import com.sostrovsky.travelup.util.inflate
 import kotlinx.android.synthetic.main.tickets_item_row.view.*
 
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.tickets_item_row.view.*
  * Date: 02.09.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-class TicketListAdapter(private val tickets: ArrayList<TicketDomainModel>) :
+class TicketListAdapter(private val tickets: ArrayList<TicketDomain>) :
     RecyclerView.Adapter<TicketListAdapter.TicketHolder>() {
 
     override fun onCreateViewHolder(
@@ -33,9 +33,9 @@ class TicketListAdapter(private val tickets: ArrayList<TicketDomainModel>) :
 
     class TicketHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
-        private var ticket: TicketDomainModel? = null
+        private var ticket: TicketDomain? = null
 
-        fun bindTicket(ticket: TicketDomainModel) {
+        fun bindTicket(ticket: TicketDomain) {
             this.ticket = ticket
             view.lblDepartureDate.text = (view.context.getText(R.string.label_departure_date)
                     as String).format(view.context.getText(R.string.departure_date))

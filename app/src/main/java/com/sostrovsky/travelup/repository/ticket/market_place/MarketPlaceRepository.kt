@@ -4,7 +4,9 @@ import com.sostrovsky.travelup.BuildConfig
 import com.sostrovsky.travelup.TravelUpApp
 import com.sostrovsky.travelup.database.TravelUpDatabase
 import com.sostrovsky.travelup.database.entities.ticket.MarketPlace
-import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
+import com.sostrovsky.travelup.database.entities.ticket.asDomain
+import com.sostrovsky.travelup.domain.ticket.MarketPlaceDomain
+import com.sostrovsky.travelup.domain.ticket.TicketSearchParamsDomain
 import com.sostrovsky.travelup.network.WebService
 import com.sostrovsky.travelup.network.dto.place.asDatabaseModel
 import com.sostrovsky.travelup.util.network.safeApiCall
@@ -19,7 +21,33 @@ import kotlinx.coroutines.withContext
 object MarketPlaceRepository {
     val database = TravelUpDatabase.getInstance(TravelUpApp.applicationContext())
 
-    private suspend fun fetchFromWebService(params: TicketSearchParams, query: String):
+    suspend fun fetchAll(): List<MarketPlaceDomain> {
+        val result = mutableListOf<MarketPlaceDomain>()
+
+        withContext(Dispatchers.IO) {
+            result.addAll(database.marketPlaceDao.getAll().asDomain())
+        }
+
+        return result
+    }
+
+    suspend fun fetchCodeFromWebService(params: TicketSearchParamsDomain, query: String): String {
+        var result = ""
+
+        val marketPlaces = fetchFromWebService(params, query)
+
+        if (marketPlaces.isNotEmpty()) {
+            marketPlaces.forEach {
+                addMarketPlaceToDB(it.code, it.name)
+            }
+
+            result = marketPlaces[0].code
+        }
+
+        return result
+    }
+
+    private suspend fun fetchFromWebService(params: TicketSearchParamsDomain, query: String):
             List<MarketPlace> {
         val result = mutableListOf<MarketPlace>()
 
@@ -46,20 +74,25 @@ object MarketPlaceRepository {
         return result
     }
 
-    suspend fun fetchCodeFromWebService(params: TicketSearchParams, query: String): String {
-        var result = ""
+    private suspend fun addMarketPlaceToDB(code: String, name: String): Int {
+        var result = 0
 
-        val marketPlaces = fetchFromWebService(params, query)
-
-        if (marketPlaces.isNotEmpty()) {
-            marketPlaces.forEach {
-                addMarketPlaceToDB(it.code, it.name)
+        withContext(Dispatchers.IO) {
+            val normalizedName = normalizedValue(name)
+            if (!isInDB(normalizedName)) {
+                result = database.marketPlaceDao.insert(generateModel(code, normalizedName)).toInt()
             }
-
-            result = marketPlaces[0].code
         }
 
         return result
+    }
+
+    private fun generateModel(code: String, name: String): MarketPlace {
+        return MarketPlace(
+            id = 0,
+            code = code,
+            name = name
+        )
     }
 
     suspend fun getIdByName(name: String): Int {
@@ -86,28 +119,7 @@ object MarketPlaceRepository {
         return getIdByName(name) != 0
     }
 
-    private suspend fun addMarketPlaceToDB(code: String, name: String): Int {
-        var result = 0
-
-        withContext(Dispatchers.IO) {
-            val normalizedName = normalizedValue(name)
-            if (!isInDB(normalizedName)) {
-                result = database.marketPlaceDao.insert(generateModel(code, normalizedName)).toInt()
-            }
-        }
-
-        return result
-    }
-
     private fun normalizedValue(name: String): String {
         return name.replace("ё", "е")
-    }
-
-    private fun generateModel(code: String, name: String): MarketPlace {
-        return MarketPlace(
-            id = 0,
-            code = code,
-            name = name
-        )
     }
 }

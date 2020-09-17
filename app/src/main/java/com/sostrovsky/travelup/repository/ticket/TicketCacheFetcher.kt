@@ -1,7 +1,7 @@
 package com.sostrovsky.travelup.repository.ticket
 
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
-import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
+import com.sostrovsky.travelup.domain.ticket.TicketSearchParamsDomain
 import com.sostrovsky.travelup.repository.DataFetcher
 import com.sostrovsky.travelup.repository.ticket.carrier.CarrierRepository
 import com.sostrovsky.travelup.repository.ticket.search_result.TicketSearchResultRepo
@@ -12,9 +12,9 @@ import com.sostrovsky.travelup.util.network.NetworkHelper
  * Date: 26.08.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainModel>> {
-    override suspend fun fetch(params: TicketSearchParams): List<TicketDomainModel> {
-        val tickets = mutableListOf<TicketDomainModel>()
+object TicketCacheFetcher : DataFetcher<TicketSearchParamsDomain, List<TicketDomain>> {
+    override suspend fun fetch(params: TicketSearchParamsDomain): List<TicketDomain> {
+        val tickets = mutableListOf<TicketDomain>()
         tickets.addAll(fetchTicketsFromDB(params))
 
         if (tickets.isEmpty() && NetworkHelper.isAvailable) {
@@ -27,9 +27,9 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
         return tickets
     }
 
-    private suspend fun fetchTicketsFromDB(params: TicketSearchParams): List<TicketDomainModel> {
+    private suspend fun fetchTicketsFromDB(params: TicketSearchParamsDomain): List<TicketDomain> {
         return TicketSearchResultRepo.fetchTickets(params).map {
-            TicketDomainModel(
+            TicketDomain(
                 departureDate = params.departureDate,
                 departureTime = it.departureTime,
                 departureFrom = params.placeFrom,
@@ -42,9 +42,9 @@ object TicketCacheFetcher : DataFetcher<TicketSearchParams, List<TicketDomainMod
     }
 
     private suspend fun savedTicketsToDB(
-        params: TicketSearchParams,
-        tickets: List<TicketDomainModel>
-    ): List<TicketDomainModel> {
+        params: TicketSearchParamsDomain,
+        tickets: List<TicketDomain>
+    ): List<TicketDomain> {
         TicketSearchResultRepo.saveTickets(params, tickets)
         return tickets
     }
