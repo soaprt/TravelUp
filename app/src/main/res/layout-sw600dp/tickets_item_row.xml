@@ -3,12 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/input_block_stroke_radius"
+    android:layout_marginTop="@dimen/ticket_list_item_vertical_margin"
+    android:layout_marginBottom="@dimen/ticket_list_item_vertical_margin"
+    android:layout_marginStart="@dimen/ticket_list_item_horizontal_margin"
+    android:layout_marginEnd="@dimen/ticket_list_item_horizontal_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/InputBlockStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/indent_16dp">
+        android:layout_height="match_parent"
+        android:layout_margin="0dp">
 
         <TextView
             android:id="@+id/lblDepartureDate"

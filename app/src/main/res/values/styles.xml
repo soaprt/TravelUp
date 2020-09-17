@@ -23,6 +23,7 @@
 
     <style name="DataFieldStyle">
         <item name="android:textSize">@dimen/data_text_size</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textStyle">bold</item>
         <item name="android:text">@string/label_no_data</item>
     </style>
