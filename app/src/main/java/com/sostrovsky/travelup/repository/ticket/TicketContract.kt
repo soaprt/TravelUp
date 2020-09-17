@@ -1,7 +1,6 @@
 package com.sostrovsky.travelup.repository.ticket
 
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
-import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
 
 /**
  * Author: Sergey Ostrovsky
@@ -9,6 +8,6 @@ import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 interface TicketContract {
-    suspend fun init()
-    suspend fun getTickets(params: TicketSearchParams): List<TicketDomainModel>
+    suspend fun fetchTicket(placeFrom: String, placeTo: String, departureDate: String):
+            List<TicketDomain>
 }

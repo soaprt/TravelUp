@@ -1,11 +1,7 @@
 package com.sostrovsky.travelup.repository
 
-import com.sostrovsky.travelup.repository.place.PlaceContract
-import com.sostrovsky.travelup.repository.place.PlaceRepository
-import com.sostrovsky.travelup.repository.preferences.PreferencesContract
-import com.sostrovsky.travelup.repository.preferences.PreferencesRepository
-import com.sostrovsky.travelup.repository.ticket.TicketContract
-import com.sostrovsky.travelup.repository.ticket.TicketRepository
+import com.sostrovsky.travelup.repository.settings.SettingsContract
+import com.sostrovsky.travelup.repository.settings.SettingsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -15,28 +11,17 @@ import kotlinx.coroutines.withContext
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
 object Repository {
-    var isInitComplete = false;
-
     suspend fun init(): Boolean {
-        withContext(Dispatchers.IO) {
-            getPlaces().init()
-            getPreferences().init()
-            getTickets().init()
+        var isInitComplete = false
 
+        withContext(Dispatchers.IO) {
+            getSettingsRepo().init()
             isInitComplete = true
         }
         return isInitComplete
     }
 
-    fun getPlaces(): PlaceContract {
-        return PlaceRepository
-    }
-
-    fun getPreferences(): PreferencesContract {
-        return PreferencesRepository
-    }
-
-    fun getTickets(): TicketContract {
-        return TicketRepository
+    private fun getSettingsRepo(): SettingsContract {
+        return SettingsRepository
     }
 }

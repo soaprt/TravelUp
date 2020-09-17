@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.databinding.FragmentAppInitBinding
-import com.sostrovsky.travelup.databinding.FragmentInitAppBinding
 
 /**
  * Fragment that will be shown on the application start.
@@ -54,7 +53,7 @@ class AppInitFragment : Fragment() {
 
     private fun moveForward() {
         val action =
-            AppInitFragmentDirections.actionSplashScreenFragmentToSearchTicketFragment()
+            AppInitFragmentDirections.actionAppInitFragmentToTicketSearchFragment()
         NavHostFragment.findNavController(this).navigate(action)
     }
 }

@@ -1,6 +1,6 @@
 package com.sostrovsky.travelup.network.dto.place
 
-import com.sostrovsky.travelup.database.entities.place.PlaceDBModel
+import com.sostrovsky.travelup.database.entities.ticket.MarketPlace
 import com.sostrovsky.travelup.util.placeCodeFromPlaceId
 import com.squareup.moshi.JsonClass
 
@@ -19,11 +19,12 @@ data class PlaceFromJSON(val PlaceId: String, val PlaceName: String, val Country
 /**
  * Convert PlaceResponse to database objects PlaceDBModel
  */
-fun PlaceDTO.asDatabaseModel(): List<PlaceDBModel> {
+fun PlaceDTO.asDatabaseModel(): List<MarketPlace> {
     return Places.map {
-        PlaceDBModel(
-            placeCode = placeCodeFromPlaceId(it.PlaceId),
-            placeName = it.PlaceName
+        MarketPlace(
+            id = 0,
+            code = placeCodeFromPlaceId(it.PlaceId),
+            name = it.PlaceName
         )
     }
 }

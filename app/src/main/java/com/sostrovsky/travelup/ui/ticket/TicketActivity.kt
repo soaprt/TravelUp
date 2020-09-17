@@ -22,8 +22,8 @@ class TicketActivity : BaseActivity(R.id.rootLayout) {
 
     private fun fragmentsWithHiddenUpButton(): AppBarConfiguration {
         return AppBarConfiguration.Builder(
-                R.id.splashScreenFragment,
-                R.id.searchTicketFragment
+                R.id.AppInitFragment,
+                R.id.TicketSearchFragment
             ).build()
     }
 

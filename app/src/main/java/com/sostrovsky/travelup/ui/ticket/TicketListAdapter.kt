@@ -4,17 +4,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sostrovsky.travelup.R
-import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
+import com.sostrovsky.travelup.domain.ticket.TicketDomain
 import com.sostrovsky.travelup.util.inflate
 import kotlinx.android.synthetic.main.tickets_item_row.view.*
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
  * Date: 02.09.20
  * Email: sergey.ostrovsky.it.dev@gmail.com
  */
-class TicketListAdapter(private val tickets: ArrayList<TicketDomainModel>) :
+class TicketListAdapter(private val tickets: ArrayList<TicketDomain>) :
     RecyclerView.Adapter<TicketListAdapter.TicketHolder>() {
 
     override fun onCreateViewHolder(
@@ -32,33 +31,19 @@ class TicketListAdapter(private val tickets: ArrayList<TicketDomainModel>) :
         holder.bindTicket(itemTicket)
     }
 
-    class TicketHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    class TicketHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
-        private var ticket: TicketDomainModel? = null
+        private var ticket: TicketDomain? = null
 
-        init {
-            v.setOnClickListener(this)
-        }
-
-        fun bindTicket(ticket: TicketDomainModel) {
+        fun bindTicket(ticket: TicketDomain) {
             this.ticket = ticket
             view.lblDepartureDate.text = (view.context.getText(R.string.label_departure_date)
                     as String).format(view.context.getText(R.string.departure_date))
             view.departureDate.text = ticket.departureDate
-            view.departureFromTo.text = (view.context.getText(R.string.departure_from_to) as String)
-                .format(ticket.departureFrom, ticket.departureTo)
+            view.departureFromTo.text = ticket.departureFromTo
             view.departureTime.text = ticket.departureTime
             view.carrierName.text = ticket.carrierName
-            view.flightPrice.text = (view.context.getText(R.string.flight_price) as String)
-                .format(ticket.flightPrice, ticket.flightPriceCurrency)
-        }
-
-        override fun onClick(v: View) {
-            Timber.e("RecyclerView: onClick()")
-        }
-
-        companion object {
-            private val TICKET_KEY = "TICKET"
+            view.flightPrice.text = ticket.flightPrice
         }
     }
 }

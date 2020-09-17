@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="settingsViewModel"
+            type="com.sostrovsky.travelup.ui.settings.SettingsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/titleConstraint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/lblLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/indent_32dp"
+            android:text="@string/label_language"
+            android:textSize="@dimen/data_text_size"
+            app:layout_constraintEnd_toEndOf="@+id/lblCurrency"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinnerLanguage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerCountry"
+            app:layout_constraintStart_toStartOf="@+id/spinnerCountry"
+            app:layout_constraintTop_toTopOf="@+id/lblLanguage" />
+
+        <TextView
+            android:id="@+id/lblCurrency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/indent_32dp"
+            android:text="@string/label_currency"
+            android:textSize="@dimen/data_text_size"
+            app:layout_constraintEnd_toEndOf="@+id/lblCountry"
+            app:layout_constraintTop_toBottomOf="@+id/lblLanguage" />
+
+        <Spinner
+            android:id="@+id/spinnerCurrency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerCountry"
+            app:layout_constraintStart_toStartOf="@+id/spinnerCountry"
+            app:layout_constraintTop_toTopOf="@+id/lblCurrency" />
+
+        <TextView
+            android:id="@+id/lblCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/indent_32dp"
+            android:layout_marginTop="@dimen/indent_32dp"
+            android:text="@string/label_country_region"
+            android:textAlignment="textEnd"
+            android:textSize="@dimen/data_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblCurrency" />
+
+        <Spinner
+            android:id="@+id/spinnerCountry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/indent_32dp"
+            android:layout_marginEnd="@dimen/indent_32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/lblCountry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lblCountry"
+            app:layout_constraintTop_toTopOf="@+id/lblCountry" />
+
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/ButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="@{settingsViewModel.saveButtonVisible}"
+            android:onClick="@{() -> settingsViewModel.saveSettings()}"
+            android:text="@string/save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblCountry" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
