@@ -3,6 +3,7 @@ package com.sostrovsky.travelup.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -11,7 +12,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.util.network.NetworkHelper
 import io.reactivex.disposables.Disposable
-
 
 open class BaseActivity(private val rootLayoutId: Int) : AppCompatActivity() {
     lateinit var navController: NavController
@@ -48,11 +48,22 @@ open class BaseActivity(private val rootLayoutId: Int) : AppCompatActivity() {
     }
 
     private fun showShackBarOffline() {
-        val messageToUser = getString(R.string.msg_you_are_offline)
+        val message = getString(R.string.msg_you_are_offline)
 
-        snackBarOffline = Snackbar.make(findViewById(rootLayoutId), messageToUser, Snackbar.LENGTH_LONG)
-        snackBarOffline?.duration = Snackbar.LENGTH_INDEFINITE
-        snackBarOffline?.show()
+        snackBarOffline = generateSnackBar(findViewById(rootLayoutId), message,
+            Snackbar.LENGTH_INDEFINITE)
+        snackBarOffline?.let {
+            it.duration = Snackbar.LENGTH_INDEFINITE
+            it.show()
+        }
+    }
+
+    private fun generateSnackBar(view: View, message: String, duration: Int) : Snackbar {
+        val result = Snackbar.make(view, message, duration)
+        val snackBarView: View = result.view
+        snackBarView.setBackgroundColor(applicationContext.resources.getColor(R.color.colorPrimary))
+
+        return result
     }
 
     private fun hideShackBarOffline() {
@@ -60,7 +71,7 @@ open class BaseActivity(private val rootLayoutId: Int) : AppCompatActivity() {
     }
 
     fun showSnackBarEvent(message: String) {
-        Snackbar.make(findViewById(rootLayoutId), message, Snackbar.LENGTH_SHORT).show()
+        generateSnackBar(findViewById(rootLayoutId), message, Snackbar.LENGTH_SHORT).show()
     }
 
     fun hideSoftKeyboard(activity: Activity) {

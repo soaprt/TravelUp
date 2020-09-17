@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="app_init_icon_size">500dp</dimen>
+    <dimen name="button_corner_radius">8dp</dimen>
     <dimen name="data_text_size">32sp</dimen>
     <dimen name="field_height">80dp</dimen>
     <dimen name="indent_2dp">2dp</dimen>
     <dimen name="indent_8dp">8dp</dimen>
     <dimen name="indent_16dp">16dp</dimen>
     <dimen name="indent_32dp">32dp</dimen>
+    <dimen name="input_block_stroke_radius">32dp</dimen>
+    <dimen name="input_block_stroke_width">3dp</dimen>
     <dimen name="hint_text_size">32dp</dimen>
     <dimen name="label_text_size">24sp</dimen>
 </resources>

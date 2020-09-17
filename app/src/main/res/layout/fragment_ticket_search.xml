@@ -12,48 +12,60 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/titleConstraint"
+        android:id="@+id/fragmentBlock"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <AutoCompleteTextView
-            android:id="@+id/edtPlaceFrom"
-            style="@style/InputFieldStyle"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/searchParamsBlock"
+            style="@style/InputBlockStyle"
             android:layout_width="0dp"
-            android:layout_height="@dimen/field_height"
-            android:completionThreshold="1"
-            android:hint="@string/hint_departure_from"
-            android:inputType="text"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <AutoCompleteTextView
-            android:id="@+id/edtPlaceTo"
-            style="@style/InputFieldStyle"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/field_height"
-            android:completionThreshold="1"
-            android:hint="@string/hint_departure_to"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtPlaceFrom" />
+            <AutoCompleteTextView
+                android:id="@+id/edtPlaceFrom"
+                style="@style/InputFieldStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/field_height"
+                android:completionThreshold="1"
+                android:hint="@string/hint_departure_from"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/edtDepartureDate"
-            style="@style/InputFieldStyle"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/field_height"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="@string/departure_date"
-            android:inputType="none"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtPlaceTo"
-            tools:ignore="TextFields" />
+            <AutoCompleteTextView
+                android:id="@+id/edtPlaceTo"
+                style="@style/InputFieldStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/field_height"
+                android:completionThreshold="1"
+                android:hint="@string/hint_departure_to"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtPlaceFrom" />
+
+            <EditText
+                android:id="@+id/edtDepartureDate"
+                style="@style/InputFieldStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/field_height"
+                android:layout_marginBottom="@dimen/indent_8dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="@string/departure_date"
+                android:inputType="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtPlaceTo"
+                tools:ignore="TextFields" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/btnSearch"
@@ -64,7 +76,7 @@
             android:text="@string/search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtDepartureDate" />
+            app:layout_constraintTop_toBottomOf="@+id/searchParamsBlock" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,7 +3,9 @@ package com.sostrovsky.travelup.ui.ticket
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
