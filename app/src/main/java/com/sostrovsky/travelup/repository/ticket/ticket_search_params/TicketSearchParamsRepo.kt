@@ -7,7 +7,6 @@ import com.sostrovsky.travelup.repository.ticket.TicketRepository
 import com.sostrovsky.travelup.repository.ticket.market_place.MarketPlaceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 
 /**
@@ -22,21 +21,10 @@ object TicketSearchParamsRepo {
         placeFrom: String, placeTo: String,
         departureDate: String
     ): Int {
-        Timber.e(
-            "1_TicketSearchParamsRepo: getTicketSearchParams():" +
-                    "\nplaceFrom: $placeFrom" +
-                    "\nplaceTo: $placeTo" +
-                    "\ndepartureDate: $departureDate "
-        )
-
         val result = mutableListOf(0)
 
         withContext(Dispatchers.IO) {
             val isMarketPlaceDBEmpty = MarketPlaceRepository.hasNoItems()
-            Timber.e(
-                "2_TicketSearchParamsRepo: getTicketSearchParams():" +
-                        "\nmarketPlace is empty: $isMarketPlaceDBEmpty"
-            )
 
             if (!isMarketPlaceDBEmpty) {
                 var canContinue = true
@@ -45,38 +33,18 @@ object TicketSearchParamsRepo {
                     MarketPlaceRepository.getIdByName(placeFrom) // getMarketPlaceId(placeFrom)
                 var marketPlaceIdTo = 0
 
-                Timber.e(
-                    "2_1_TicketSearchParamsRepo: getTicketSearchParams():" +
-                            "\nmarketPlaceIdFrom: $marketPlaceIdFrom"
-                )
-
                 if (marketPlaceIdFrom <= 0) {
                     canContinue = false
                 }
-
-                Timber.e(
-                    "2_2_TicketSearchParamsRepo: getTicketSearchParams():" +
-                            "\ncanContinue: $canContinue"
-                )
 
                 if (canContinue) {
                     marketPlaceIdTo =
                         MarketPlaceRepository.getIdByName(placeTo) // getMarketPlaceId(placeTo)
 
-                    Timber.e(
-                        "2_2_1_TicketSearchParamsRepo: getTicketSearchParams():" +
-                                "\nmarketPlaceIdTo: $marketPlaceIdTo"
-                    )
-
                     if (marketPlaceIdTo <= 0) {
                         canContinue = false
                     }
                 }
-
-                Timber.e(
-                    "2_3_TicketSearchParamsRepo: getTicketSearchParams():" +
-                            "\ncanContinue: $canContinue"
-                )
 
                 if (canContinue) {
                     result[0] = TicketRepository.database.ticketSearchParamsDao.getId(
@@ -84,11 +52,6 @@ object TicketSearchParamsRepo {
                     )
                 }
             }
-
-            Timber.e(
-                "3_TicketSearchParamsRepo: getTicketSearchParams():" +
-                        "\nticketSearchParamsId: ${result[0]}"
-            )
         }
 
         return result[0]

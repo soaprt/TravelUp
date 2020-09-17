@@ -10,7 +10,6 @@ import com.sostrovsky.travelup.repository.DataFetcher
 import com.sostrovsky.travelup.repository.ticket.market_place.MarketPlaceRepository
 import com.sostrovsky.travelup.util.mockedTicketsResponse
 import com.sostrovsky.travelup.util.network.safeApiCall
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -19,7 +18,6 @@ import timber.log.Timber
  */
 object TicketWebServiceFetcher : DataFetcher<TicketSearchParams, List<TicketDomainModel>> {
     override suspend fun fetch(params: TicketSearchParams): List<TicketDomainModel> {
-        Timber.e("TicketWebServiceFetcher: fetch()")
         val tickets = mutableListOf<TicketDomainModel>()
 
         val debug = false

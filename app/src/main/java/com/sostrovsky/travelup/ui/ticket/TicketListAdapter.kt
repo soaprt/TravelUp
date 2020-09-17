@@ -7,7 +7,6 @@ import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.util.inflate
 import kotlinx.android.synthetic.main.tickets_item_row.view.*
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -32,13 +31,9 @@ class TicketListAdapter(private val tickets: ArrayList<TicketDomainModel>) :
         holder.bindTicket(itemTicket)
     }
 
-    class TicketHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    class TicketHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
         private var ticket: TicketDomainModel? = null
-
-        init {
-            v.setOnClickListener(this)
-        }
 
         fun bindTicket(ticket: TicketDomainModel) {
             this.ticket = ticket
@@ -49,14 +44,6 @@ class TicketListAdapter(private val tickets: ArrayList<TicketDomainModel>) :
             view.departureTime.text = ticket.departureTime
             view.carrierName.text = ticket.carrierName
             view.flightPrice.text = ticket.flightPrice
-        }
-
-        override fun onClick(v: View) {
-            Timber.e("RecyclerView: onClick()")
-        }
-
-        companion object {
-            private val TICKET_KEY = "TICKET"
         }
     }
 }

@@ -5,7 +5,6 @@ import com.sostrovsky.travelup.database.TravelUpDatabase
 import com.sostrovsky.travelup.database.entities.ticket.Carrier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 
 /**
@@ -27,21 +26,11 @@ object CarrierRepository {
     }
 
     suspend fun getIdByName(name: String): Int {
-        Timber.e(
-            "1_CarrierRepository: getIdByName():" +
-                    "\nname: $name"
-        )
-
         val result = mutableListOf(0)
 
         withContext(Dispatchers.IO) {
             result[0] = database.carrierDao.getIdByName(name)
         }
-
-        Timber.e(
-            "2_CarrierRepository: getIdByName():" +
-                    "\nresult: ${result[0]}"
-        )
 
         return result[0]
     }

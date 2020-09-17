@@ -3,7 +3,6 @@ package com.sostrovsky.travelup.repository.settings.country
 import com.sostrovsky.travelup.database.entities.settings.Country
 import com.sostrovsky.travelup.repository.settings.DataGenerator
 import com.sostrovsky.travelup.util.network.NetworkHelper
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -12,7 +11,6 @@ import timber.log.Timber
  */
 object CountryFactory {
     suspend fun generate(): List<Country> {
-        Timber.e("CountryFactory: generate(): no data in db")
         val dataGenerator: DataGenerator<List<Country>> =
             if (NetworkHelper.isAvailable) {
                 CountryGeneratorOnline

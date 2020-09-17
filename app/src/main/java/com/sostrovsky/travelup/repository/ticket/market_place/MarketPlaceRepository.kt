@@ -10,7 +10,6 @@ import com.sostrovsky.travelup.network.dto.place.asDatabaseModel
 import com.sostrovsky.travelup.util.network.safeApiCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -54,11 +53,7 @@ object MarketPlaceRepository {
 
         if (marketPlaces.isNotEmpty()) {
             marketPlaces.forEach {
-                val insertedRowId = addMarketPlaceToDB(it.code, it.name)
-                Timber.e(
-                    "MarketPlaceRepository: fetchCodeFromWebService():" +
-                            "\ninsertedRowId: $insertedRowId"
-                )
+                addMarketPlaceToDB(it.code, it.name)
             }
 
             result = marketPlaces[0].code
@@ -68,21 +63,11 @@ object MarketPlaceRepository {
     }
 
     suspend fun getIdByName(name: String): Int {
-        Timber.e(
-            "1_MarketPlaceRepository: getIdByName():" +
-                    "\nname: $name"
-        )
-
         val result = mutableListOf(0)
 
         withContext(Dispatchers.IO) {
             result[0] = database.marketPlaceDao.getIdByName(normalizedValue(name))
         }
-
-        Timber.e(
-            "3_MarketPlaceRepository: getIdByName():" +
-                    "\nresult: ${result[0]}"
-        )
 
         return result[0]
     }

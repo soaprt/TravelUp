@@ -6,7 +6,6 @@ import com.sostrovsky.travelup.repository.ticket.carrier.CarrierRepository
 import com.sostrovsky.travelup.util.isoTimeToLocalTime
 import com.sostrovsky.travelup.util.isoDateToLocalDate
 import com.squareup.moshi.JsonClass
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -49,12 +48,8 @@ suspend fun TicketsResponse.asDomainModel(): List<TicketDomainModel> {
     val tickets = mutableListOf<TicketDomainModel>()
 
     Quotes.forEach {
-        Carriers.forEach {
-            val insertedRowId = CarrierRepository.addCarrierToDB(it.CarrierId, it.Name)
-            Timber.e(
-                "TicketsResponse: TicketsResponse.asDomainModel():" +
-                        "\ninsertedRowId: $insertedRowId"
-            )
+        Carriers.forEach { carrier ->
+            CarrierRepository.addCarrierToDB(carrier.CarrierId, carrier.Name)
         }
 
         tickets.add(

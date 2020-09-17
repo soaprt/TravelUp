@@ -3,7 +3,6 @@ package com.sostrovsky.travelup.repository.settings.language
 import com.sostrovsky.travelup.database.entities.settings.Language
 import com.sostrovsky.travelup.repository.settings.DataGenerator
 import com.sostrovsky.travelup.util.network.NetworkHelper
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -12,7 +11,6 @@ import timber.log.Timber
  */
 object LanguageFactory {
     suspend fun generate(): List<Language> {
-        Timber.e("LanguageFactory: generate(): no data in db")
         val dataGenerator: DataGenerator<List<Language>> =
             if (NetworkHelper.isAvailable) {
                 LanguageGeneratorOnline

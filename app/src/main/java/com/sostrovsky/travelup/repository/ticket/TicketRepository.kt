@@ -6,7 +6,6 @@ import com.sostrovsky.travelup.domain.ticket.TicketDomainModel
 import com.sostrovsky.travelup.domain.ticket.TicketSearchParams
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 /**
  * Author: Sergey Ostrovsky
@@ -18,13 +17,6 @@ object TicketRepository : TicketContract {
 
     override suspend fun fetchTicket(placeFrom: String, placeTo: String, departureDate: String):
             List<TicketDomainModel> {
-        Timber.e(
-            "1_TicketRepository: fetchTicket():" +
-                    "\nplaceFrom: $placeFrom" +
-                    "\nplaceTo: $placeTo" +
-                    "\ndepartureDate: $departureDate "
-        )
-
         val result = mutableListOf<TicketDomainModel>()
 
         withContext(Dispatchers.IO) {
@@ -34,11 +26,6 @@ object TicketRepository : TicketContract {
                 result.addAll(TicketCacheFetcher.fetch(params))
             }
         }
-
-        Timber.e(
-            "2_TicketRepository: fetchTicket():" +
-                    "\nresult size = ${result.size}"
-        )
 
         return result
     }
