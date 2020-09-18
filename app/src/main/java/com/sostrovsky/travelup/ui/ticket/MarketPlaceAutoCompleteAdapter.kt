@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import com.sostrovsky.travelup.R
 import com.sostrovsky.travelup.domain.ticket.MarketPlaceDomain
-import kotlinx.android.synthetic.main.market_place_autocomplete_row.view.*
+import kotlinx.android.synthetic.main.autocomplete_list_row.view.*
 
 /**
  * Author: Sergey Ostrovsky
@@ -32,9 +32,9 @@ class MarketPlaceAutoCompleteAdapter(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(
-            R.layout.market_place_autocomplete_row, parent, false
+            R.layout.autocomplete_list_row, parent, false
         )
-        view.marketPlace.text = marketPlacesAll[position].name
+        view.label.text = marketPlacesAll[position].name
         return view
     }
 

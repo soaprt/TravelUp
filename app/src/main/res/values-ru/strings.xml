@@ -6,7 +6,7 @@
     <string name="hint_departure_from">Откуда</string>
     <string name="hint_departure_to">Куда</string>
     <string name="label_carrier_name">Перевозчик:</string>
-    <string name="label_country_region">Страна или\nрегион:</string>
+    <string name="label_country_region">Страна или регион:</string>
     <string name="label_currency">Валюта:</string>
     <string name="label_departure_date">%s:</string>
     <string name="label_departure_time">Время отправления:</string>

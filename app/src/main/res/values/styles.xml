@@ -39,12 +39,23 @@
         <item name="android:layout_marginBottom">@dimen/indent_8dp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorHint">@android:color/darker_gray</item>
-        <item name="android:textSize">@dimen/hint_text_size</item>
+        <item name="android:textSize">@dimen/data_text_size</item>
     </style>
 
     <style name="LabelStyle">
         <item name="android:layout_marginTop">@dimen/indent_8dp</item>
         <item name="android:textSize">@dimen/label_text_size</item>
+    </style>
+
+    <style name="SpinnerListItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:padding">@dimen/indent_8dp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/data_text_size</item>
+    </style>
+
+    <style name="SpinnerSelectedItemStyle" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/data_text_size</item>
     </style>
 
 </resources>
