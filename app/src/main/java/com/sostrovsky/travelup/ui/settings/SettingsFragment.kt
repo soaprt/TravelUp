@@ -52,11 +52,12 @@ class SettingsFragment : Fragment() {
     private fun setSpinnerLanguage() {
         viewModel.fetchLanguages().observe(viewLifecycleOwner, Observer { data ->
             spinnerLanguage.adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item, data.first
-            )
+                requireContext(), R.layout.spinner_selected_item,
+                data.first
+            ).apply {
+                setDropDownViewResource(R.layout.spinner_list_item)
+            }
 
-            // val itemToSelect = data.second.takeLast(1)[0]
             val itemToSelect = viewModel.getLastListItem(data.second)
             if (itemToSelect >= 0) {
                 spinnerLanguage.setSelection(itemToSelect)
@@ -80,11 +81,12 @@ class SettingsFragment : Fragment() {
     private fun setCurrencySpinner() {
         viewModel.fetchCurrencies().observe(viewLifecycleOwner, Observer { data ->
             spinnerCurrency.adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item, data.first
-            )
+                requireContext(), R.layout.spinner_selected_item,
+                data.first
+            ).apply {
+                setDropDownViewResource(R.layout.spinner_list_item)
+            }
 
-//            val itemToSelect = data.second.takeLast(1)[0]
             val itemToSelect = viewModel.getLastListItem(data.second)
             if (itemToSelect >= 0) {
                 spinnerCurrency.setSelection(itemToSelect)
@@ -108,11 +110,12 @@ class SettingsFragment : Fragment() {
     private fun setCountrySpinner() {
         viewModel.fetchCountries().observe(viewLifecycleOwner, Observer { data ->
             spinnerCountry.adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item, data.first
-            )
+                requireContext(), R.layout.spinner_selected_item,
+                data.first
+            ).apply {
+                setDropDownViewResource(R.layout.spinner_list_item)
+            }
 
-//            val itemToSelect = data.second.takeLast(1)[0]
             val itemToSelect = viewModel.getLastListItem(data.second)
             if (itemToSelect >= 0) {
                 spinnerCountry.setSelection(itemToSelect)

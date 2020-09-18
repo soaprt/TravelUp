@@ -8,7 +8,7 @@
     <string name="hint_departure_from">Departing from</string>
     <string name="hint_departure_to">Flying to</string>
     <string name="label_carrier_name">Carrier name:</string>
-    <string name="label_country_region">Country or\nregion:</string>
+    <string name="label_country_region">Country or region:</string>
     <string name="label_currency">Currency:</string>
     <string name="label_departure_date">%s:</string>
     <string name="label_departure_time">Departure time:</string>
