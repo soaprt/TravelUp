@@ -9,7 +9,7 @@ To develop this application I've used:
 - Language: Kotlin
 - Architecture: MVVM
 - Data fetching (database, network): Coroutines
-- View Components: CardView, RecyclerView
+- View Components: AutoCompleteTextView, CardView, RecyclerView
 - Libraries: JetPack(Navigation, Room, ViewModel and LiveData), JodaTime, Moshi (parsing JSON),  Retrofit, RxJava, Timber (logging)
 
 ![img1](https://user-images.githubusercontent.com/69909003/93609511-a1228b00-f9d4-11ea-89d6-d302a7fa55a4.png)
