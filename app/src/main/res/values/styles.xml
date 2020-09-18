@@ -1,31 +1,29 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Autocomplete" parent="InputFieldStyle">
-        <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 
     <style name="ButtonStyle">
-        <item name="android:layout_marginTop">@dimen/indent_32dp</item>
         <item name="android:background">@drawable/button_state_selector</item>
+        <item name="android:layout_marginTop">@dimen/indent_32dp</item>
+        <item name="android:padding">@dimen/indent_8dp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/data_text_size</item>
-        <item name="android:padding">@dimen/indent_8dp</item>
     </style>
 
     <style name="DataFieldStyle">
-        <item name="android:textSize">@dimen/data_text_size</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:text">@string/label_no_data</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/data_text_size</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="InputBlockStyle">
@@ -35,8 +33,8 @@
     </style>
 
     <style name="InputFieldStyle">
-        <item name="android:layout_marginTop">@dimen/indent_8dp</item>
         <item name="android:layout_marginBottom">@dimen/indent_8dp</item>
+        <item name="android:layout_marginTop">@dimen/indent_8dp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorHint">@android:color/darker_gray</item>
         <item name="android:textSize">@dimen/data_text_size</item>
