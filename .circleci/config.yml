@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-$ANDROID_TARGET_VERSION-alpha
+      - image: circleci/android:api-$ANDROID_TARGET_VERSION
     environment:
       TERM: dumb
       JVM_OPTS: -Xmx4g -Xms2g -XX:MaxPermSize=2g
