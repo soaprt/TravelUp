@@ -1,14 +1,23 @@
 apply plugin: 'com.android.application'
+
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+
 apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'com.android.application'
+
+// apply plugin: 'com.google.gms.google-services'
+
 apply plugin: 'androidx.navigation.safeargs'
+
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.sostrovsky.travelup"
-        minSdkVersion 21
+        minSdkVersion 28
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -30,25 +39,11 @@ android {
             buildConfigField("String", "API_VERSION", "\"$debugApiVersion\"")
             buildConfigField("String", "BASE_URL", "\"$debugBaseUrl\"")
         }
-
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
     }
 
     android {
         lintOptions {
             abortOnError = false
-        }
-
-        kapt {
-            useBuildCache true
-        }
-
-        dexOptions {
-            preDexLibraries true
-            jumboMode false
         }
     }
 
@@ -61,9 +56,9 @@ android {
         enabled = true
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
+//    kotlinOptions {
+//        jvmTarget = JavaVersion.VERSION_1_8.toString()
+//    }
 }
 
 dependencies {
