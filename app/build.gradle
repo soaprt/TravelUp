@@ -37,13 +37,28 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
+    android {
+        lintOptions {
+            abortOnError = false
+        }
+
+        kapt {
+            useBuildCache true
+        }
+
+        dexOptions {
+            preDexLibraries true
+            jumboMode false
+        }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     kotlinOptions {
@@ -103,11 +118,6 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
     implementation "com.google.android.material:material:$supportlibVersion"
 
-    // Testing
-    testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "androidx.test:runner:$runnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
-
     // Timber (logging)
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
@@ -115,4 +125,17 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleViewModelVer"
+
+    // Instrumented testing
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
+    androidTestImplementation "androidx.test:runner:$runnerVersion"
+    androidTestImplementation "androidx.test.ext:junit:$junitIntrumentedVer"
+
+    // Mock testing
+    testImplementation "io.mockk:mockk:1.9"
+
+    // Unit testing
+    testImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+    testImplementation "junit:junit:$junitVersion"
 }
