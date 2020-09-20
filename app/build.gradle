@@ -13,12 +13,12 @@ apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.sostrovsky.travelup"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -43,7 +43,7 @@ android {
 
     android {
         lintOptions {
-            abortOnError = false
+            abortOnError true
         }
     }
 
@@ -68,6 +68,14 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.72"
+
+    // Maybe it is unuseful...will see
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
+    annotationProcessor 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
+    annotationProcessor 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
+    annotationProcessor 'javax.annotation:javax.annotation-api:1.3.2'
+
 
     // Android KTX
 //    implementation "androidx.core:core-ktx:$coreKtxVersion"
