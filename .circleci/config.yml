@@ -4,6 +4,8 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
+    java:
+      version: 'oraclejdk8'
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
