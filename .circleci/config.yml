@@ -1,13 +1,22 @@
-version: 2.1
+#
+# Build configuration for Circle CI
+#
 
-orbs:
- android: circleci/android@0.2.1
+general:
+  artifacts:
+    - /home/ss/EDUCATION/1_Computer_Disciplines/7_Programming/2_Mobile/1_Android/2_Code/2_Projects/4_TravelUp/2_Code/TravelUpApp/app/build/outputs/apk/
 
-jobs:
-  build:
-    executor: android/android
-        
-    steps:
-      - checkout
-      - run:
-          command: ./gradlew build
+machine:
+  environment:
+    ANDROID_HOME: /home/ss/JOB/Serega/Programming/ANDROID/Sdk
+    JAVA_HOME: /home/ss/JOB/Serega/Programming/JAVA/jdk1.8.0_131
+
+dependencies:
+  override:
+    - echo y | android update sdk --no-ui --all --filter tools,platform-tools, build-tools-29.0.3,android-29,extra-google-m2repository,extra-android-support
+    - ANDROID_HOME=/home/ss/JOB/Serega/Programming/ANDROID/Sdk ./gradlew dependencies
+
+test:
+  override:
+    - (./gradlew assemble):
+        timeout: 360
