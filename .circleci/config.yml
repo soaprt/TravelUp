@@ -4,6 +4,11 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
+    dependencies:
+      pre:
+        - sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk/bin/java
+        - sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk/bin/javac
+        - echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk' >> ~/.circlerc
     java:
       version: 'oraclejdk8'
     environment:
